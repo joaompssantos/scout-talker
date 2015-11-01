@@ -1,2 +1,2 @@
 # encryption-for-boys
-Scouting chipers and encryption program
+Scouting ciphers and encryption program
