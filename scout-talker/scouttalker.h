@@ -20,8 +20,12 @@ private:
     Window *window;
 
     // Methods / Functions
-    void encode();
     void clearStrings();
+    void encode();
+    void encodeChineseCode();
+    void encodeAngularCode();
+    void encodeReverseAlphabet();
+
 signals:
 
 public slots:

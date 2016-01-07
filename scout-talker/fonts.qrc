@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>fonts/Chines&amp;Angular.TTF</file>
+        <file>fonts/chinese-angular.ttf</file>
     </qresource>
 </RCC>

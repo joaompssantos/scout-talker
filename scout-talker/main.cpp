@@ -5,10 +5,11 @@
 
 int main(int argc, char *argv[])
 {
-    // Add custom font to the application database
-    QFontDatabase::addApplicationFont(":/fonts/Chines&Angular.TTF");
-
     QApplication a(argc, argv);
+
+    // Add custom font to the application database
+    QFontDatabase::addApplicationFont(":/fonts/chinese-angular.ttf");
+
     Window window;
     window.show();
 

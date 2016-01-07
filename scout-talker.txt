@@ -6,33 +6,9 @@ Especificações Scout Talker
 - Best practices: http://doc.qt.io/qt-5/overviews-main.html
 - http://wiki.qt.io/Build_Standalone_Qt_Application_for_Windows
 - Documentation: https://wiki.qt.io/Qt_Writing_Guidelines
-- Font used
 - Layout managment: http://doc.qt.io/qt-5/layout.html
-
-INSTALL(FILES ${QT_DIR}/bin/Qt5Core${QT_DLL_POSTFIX}.dll DESTINATION bin )
-INSTALL(FILES ${QT_DIR}/bin/Qt5Gui${QT_DLL_POSTFIX}.dll DESTINATION bin )
-INSTALL(FILES ${QT_DIR}/bin/Qt5Widgets${QT_DLL_POSTFIX}.dll DESTINATION bin )
-INSTALL(FILES ${QT_DIR}/bin/libGLESv2${QT_DLL_POSTFIX}.dll DESTINATION bin )
-INSTALL(FILES ${QT_DIR}/bin/libEGL${QT_DLL_POSTFIX}.dll DESTINATION bin )
-INSTALL(FILES ${QT_DIR}/bin/icudt52.dll DESTINATION bin )
-INSTALL(FILES ${QT_DIR}/bin/icuin52.dll DESTINATION bin )
-INSTALL(FILES ${QT_DIR}/bin/icuuc52.dll DESTINATION bin )
-INSTALL(FILES ${QT_DIR}/plugins/platforms/qminimal.dll DESTINATION bin/platforms )
-INSTALL(FILES ${QT_DIR}/plugins/platforms/qoffscreen.dll DESTINATION bin/platforms )
-INSTALL(FILES ${QT_DIR}/plugins/platforms/qwindows.dll DESTINATION bin/platforms )
-
-${QT_DIR} -> pasta onde esta o QT
-C:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/redist/x64/Microsoft.VC120.CRT
-do visual studio tirei daqui
-
-INSTALL(FILES ${MSVC_DLL_DIR}/msvcr120.dll DESTINATION bin )
-INSTALL(FILES ${MSVC_DLL_DIR}/msvcp120.dll DESTINATION bin )
-
-https://wiki.qt.io/Handling_Microsoft_Word_file_format
-https://www.google.pt/?gws_rd=ssl#q=qt+custom+font+doesn%27t+work+on+linux
-
-https://www.google.pt/?gws_rd=ssl#q=qt+use+font+not+installed+on+system
-
+- Word files: https://wiki.qt.io/Handling_Microsoft_Word_file_format
 - Software versioning: https://en.wikipedia.org/wiki/Software_versioning
+- Check the needed dlls: http://doc.qt.io/qt-5/windows-deployment.html#creating-the-application-package
 
-http://doc.qt.io/qt-5/windows-deployment.html#creating-the-application-package
+https://www.google.pt/?gws_rd=ssl#q=qt+custom+font+doesn%27t+work+on+linux

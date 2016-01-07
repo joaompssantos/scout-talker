@@ -13,14 +13,14 @@ class QAction;
 class QGroupBox;
 class QTextEdit;
 class QTabWidget;
-class QMenu;
+class QCheckBox;
 class Window : public QWidget
 {
     Q_OBJECT
 
 public:
     // Variables
-    enum availableTabs{Numeral, Angular, Chinese};
+    enum availableTabs{ChineseCode, AngularCode, ReverseAlphabet};
 
     // Methods / Functions
     Window(QWidget *parent = 0);
@@ -31,23 +31,23 @@ public:
     void setEncodedString(QString string);
 private:
     // Variables
-    QPushButton *quitButton;
     QGroupBox *titleGroupBox;
+    QPushButton *mainMenuButton;
     QTextEdit *mainTextBox;
     QTabWidget *codecAreaBox;
-    QVBoxLayout *chineseCode, *angularCode, *numeralCode;
-    QMenu *mainMenu;
-
-    QTextEdit *textBox;
+    QWidget *chineseCode;
+    QWidget *angularCode;
+    QWidget *reverseAlphabet;
 
     // Methods / Functions
     void createTitle();
+    void createMainMenu();
     void createMainTextBox();
     void createCodecAreaBox();
-    void createChineseCodeBox();
-    void createAngularCodeBox();
-    void createNumeralCodeBox();
-    void createMainMenu();
+    QVBoxLayout *configCodecAreaWidgets();
+    void createChineseCodeTab();
+    void createAngularCodeTab();
+    void createReverseAlphabetTab();
 signals:
     void startEncode();
 public slots:
