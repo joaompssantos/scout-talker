@@ -21,6 +21,7 @@ private:
 
     // Methods / Functions
     void clearStrings();
+    QString removeAccents(QString string);
     void encode();
     void encodeChineseCode();
     void encodeAngularCode();
