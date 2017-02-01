@@ -4,11 +4,11 @@ Especificações Scout Talker
 - Multi platform eventually
 - Check for upgrades
 - Best practices: http://doc.qt.io/qt-5/overviews-main.html
-- http://wiki.qt.io/Build_Standalone_Qt_Application_for_Windows
 - Documentation: https://wiki.qt.io/Qt_Writing_Guidelines
 - Layout managment: http://doc.qt.io/qt-5/layout.html
-- Word files: https://wiki.qt.io/Handling_Microsoft_Word_file_format
 - Software versioning: https://en.wikipedia.org/wiki/Software_versioning
-- Check the needed dlls: http://doc.qt.io/qt-5/windows-deployment.html#creating-the-application-package
-
-https://www.google.pt/?gws_rd=ssl#q=qt+custom+font+doesn%27t+work+on+linux
+- Check the needed dlls: http://doc.qt.io/qt-5/windows-deployment.html#creating-the-application-package , http://wiki.qt.io/Build_Standalone_Qt_Application_for_Windows
+- App icon: http://doc.qt.io/qt-5.5/appicon.html
+- Create protections and checks (ex: check if file was susccessfully saved)
+- Some letter on chinese and angular code are too close together
+- Codes: https://sites.google.com/site/codesforscouts/home

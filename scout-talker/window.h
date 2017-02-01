@@ -5,30 +5,33 @@
 #include "scouttalker.h"
 
 class QPushButton;
-class QLabel;
-class QVBoxLayout;
-class QMenuBar;
-class QMenu;
-class QAction;
 class QGroupBox;
 class QTextEdit;
-class QTabWidget;
-class QCheckBox;
+class QVBoxLayout;
 class Window : public QWidget
 {
     Q_OBJECT
 
 public:
     // Variables
-    enum availableTabs{ChineseCode, AngularCode, ReverseAlphabet};
+    // Types of encoding available
+    enum availableTabs{ChineseCode, AngularCode, ReverseAlphabet, Last};
+
+    // File saving types
+    enum savingTypes{All, Font, Image};
 
     // Methods / Functions
     Window(QWidget *parent = 0);
     ~Window();
 
+    // Getters
     availableTabs getTab();
     QString getToEncodeString();
+
+    // Setters
     void setEncodedString(QString string);
+    void setTextColour(QColor colour);
+    void setTextFont(QFont font);
 private:
     // Variables
     QGroupBox *titleGroupBox;
@@ -44,17 +47,22 @@ private:
     void createMainMenu();
     void createMainTextBox();
     void createCodecAreaBox();
-    QVBoxLayout *configCodecAreaWidgets();
+    QVBoxLayout *configCodecAreaWidgets(int type);
     void createChineseCodeTab();
     void createAngularCodeTab();
     void createReverseAlphabetTab();
+
+    void saveFiles();
 signals:
     void startEncode();
 public slots:
-    void runEncode();
+    void runEncodeSlot();
 private slots:
-    void qtInfo();
-    void stInfo();
+    void qtInfoSlot();
+    void stInfoSlot();
+    void changeFontSlot();
+    void changeColourSlot();
+    void saveSlot();
 };
 
 #endif // SCOUTTALKER_H

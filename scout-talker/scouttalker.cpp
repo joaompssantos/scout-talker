@@ -13,29 +13,36 @@ ScoutTalker::ScoutTalker(Window *w, QObject *parent) : QObject(parent)
     connect(window, SIGNAL(startEncode()), this, SLOT(encodeSlot()));
 }
 
+// Method that clears the class strings
 void ScoutTalker::clearStrings()
 {
     toEncodeString->clear();
     encodedString->clear();
 }
 
-// Method to remove diatritic letters, such as ç or á
+// Method to remove diacritic letters, such as ç or á
 QString ScoutTalker::removeAccents(QString string) {
-    QString diacriticLetters_;
-    QStringList noDiacriticLetters_;
-
+    // Check if the diacritic letters string has already been created. If not the string is now populated.
     if (diacriticLetters_.isEmpty()) {
         diacriticLetters_ = QString::fromUtf8("ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ");
         noDiacriticLetters_ << "S"<<"OE"<<"Z"<<"s"<<"oe"<<"z"<<"Y"<<"Y"<<"u"<<"A"<<"A"<<"A"<<"A"<<"A"<<"A"<<"AE"<<"C"<<"E"<<"E"<<"E"<<"E"<<"I"<<"I"<<"I"<<"I"<<"D"<<"N"<<"O"<<"O"<<"O"<<"O"<<"O"<<"O"<<"U"<<"U"<<"U"<<"U"<<"Y"<<"s"<<"a"<<"a"<<"a"<<"a"<<"a"<<"a"<<"ae"<<"c"<<"e"<<"e"<<"e"<<"e"<<"i"<<"i"<<"i"<<"i"<<"o"<<"n"<<"o"<<"o"<<"o"<<"o"<<"o"<<"o"<<"u"<<"u"<<"u"<<"u"<<"y"<<"y";
     }
 
+    // Creates the output string
     QString output = "";
-    for (int i = 0; i < string.length(); i++) {
+
+    // Loop that iterates through the input string and replaces diacritic letters with their non-diacritic equivalen
+    for (int i = 0; i < string.length(); i++)
+    {
         QChar ch = string[i];
         int dIndex = diacriticLetters_.indexOf(ch);
-        if (dIndex < 0) {
+
+        if (dIndex < 0)
+        {
             output.append(ch);
-        } else {
+        }
+        else
+        {
             QString replacement = noDiacriticLetters_[dIndex];
             output.append(replacement);
         }
@@ -44,6 +51,7 @@ QString ScoutTalker::removeAccents(QString string) {
     return output;
 }
 
+// Method that manages the encoding process
 void ScoutTalker::encode()
 {
     // Clears the class strings
@@ -69,6 +77,8 @@ void ScoutTalker::encode()
         encodeReverseAlphabet();
         break;
     default:
+        // Do the procedures to perform the chinese code
+        encodeChineseCode();
         break;
     }
 

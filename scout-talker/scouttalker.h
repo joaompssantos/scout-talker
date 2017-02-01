@@ -2,8 +2,10 @@
 #define SCOUTTALKER_H
 
 #include <QObject>
+#include <QStringList>
 
 class QString;
+//class QStringList;
 class Window;
 class ScoutTalker : public QObject
 {
@@ -16,6 +18,8 @@ private:
     // Variables
     QString *toEncodeString;
     QString *encodedString;
+    QString diacriticLetters_;
+    QStringList noDiacriticLetters_;
 
     Window *window;
 
