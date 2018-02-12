@@ -200,6 +200,20 @@ void Window::createMainMenu()
     // Creates the push button main menu
     QMenu *mainMenu = new QMenu();
 
+    // Add Change Font action to the menu
+    QAction *changeFontAction = mainMenu->addAction(tr("Change Font"));
+    // Sets shortcut for the exit action
+    //exitAction->setShortcuts(QKeySequence::Quit);
+    // Connects the exit action to the quit slot
+    connect(changeFontAction, SIGNAL(triggered()), this, SLOT(changeFontSlot()));
+
+    // Add Change Font action to the menu
+    QAction *changeColourAction = mainMenu->addAction(tr("Change Font Colour"));
+    // Sets shortcut for the exit action
+    //exitAction->setShortcuts(QKeySequence::Quit);
+    // Connects the exit action to the quit slot
+    connect(changeColourAction, SIGNAL(triggered()), this, SLOT(changeColourSlot()));
+
     //Add ABout Scout Talker action to the menu
     QAction *aboutST = mainMenu->addAction(tr("About &Scout Talker"));
     // Sets icon for the action
@@ -214,20 +228,6 @@ void Window::createMainMenu()
     aboutQt->setIcon(QIcon(":/icons/Qt_logo_2015.png"));
     // Connects the action to the qtInfo slot
     connect(aboutQt, SIGNAL(triggered()), this, SLOT(qtInfoSlot()));
-
-    // Add Change Font action to the menu
-    QAction *changeFontAction = mainMenu->addAction(tr("Change Font"));
-    // Sets shortcut for the exit action
-    //exitAction->setShortcuts(QKeySequence::Quit);
-    // Connects the exit action to the quit slot
-    connect(changeFontAction, SIGNAL(triggered()), this, SLOT(changeFontSlot()));
-
-    // Add Change Font action to the menu
-    QAction *changeColourAction = mainMenu->addAction(tr("Change Font Colour"));
-    // Sets shortcut for the exit action
-    //exitAction->setShortcuts(QKeySequence::Quit);
-    // Connects the exit action to the quit slot
-    connect(changeColourAction, SIGNAL(triggered()), this, SLOT(changeColourSlot()));
 
     // Add Exit action to the menu
     QAction *exitAction = mainMenu->addAction(tr("E&xit"));
