@@ -22,5 +22,5 @@ HEADERS  += \
     window.h
 
 RESOURCES += \
-    icons.qrc \
-    fonts.qrc
+    resources/icons.qrc \
+    resources/fonts.qrc
