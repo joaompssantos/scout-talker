@@ -1,22 +1,25 @@
 /* Scout Talker
-Copyright (C) 2017  Diana Capela & João Santos
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. */
+ * Copyright (C) 2015 - 2017 by Diana Capela
+ *                              João  Santos    (joaompssantos@gmail.com)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
 
 #include "window.h"
 #include "scouttalker.h"
+#include "ScoutTalkerConfig.h"
 
 // Comment each one
 #include <QApplication>
@@ -217,7 +220,7 @@ void Window::createMainMenu()
     //Add ABout Scout Talker action to the menu
     QAction *aboutST = mainMenu->addAction(tr("About &Scout Talker"));
     // Sets icon for the action
-    aboutST->setIcon(QIcon(":/icons/logo.png"));
+    aboutST->setIcon(QIcon(":scout-talker-logo.png"));
 
     // Connects the action to the stInfo slot
     connect(aboutST, SIGNAL(triggered()), this, SLOT(stInfoSlot()));
@@ -225,7 +228,7 @@ void Window::createMainMenu()
     // Add About Qt action to the menu
     QAction *aboutQt = mainMenu->addAction(tr("About &Qt"));
     // Sets icon for the action
-    aboutQt->setIcon(QIcon(":/icons/Qt_logo_2015.png"));
+    aboutQt->setIcon(QIcon(":qt-logo.png"));
     // Connects the action to the qtInfo slot
     connect(aboutQt, SIGNAL(triggered()), this, SLOT(qtInfoSlot()));
 
@@ -244,7 +247,7 @@ void Window::createMainMenu()
     mainMenuButton->setFixedSize(100, 100);
 
     // Sets button icon and size
-    mainMenuButton->setIcon(QIcon(":/icons/logo.png"));
+    mainMenuButton->setIcon(QIcon(":scout-talker-logo.png"));
     mainMenuButton->setIconSize(QSize(95, 95));
 
     // Changes button style sheet to remove the menu indicator and border
@@ -588,8 +591,9 @@ void Window::qtInfoSlot()
 void Window::stInfoSlot()
 {
     QString aboutText = QString(tr("<p><b>Scout Talker Version Alpha:</b></p>"
-                                   "QT-based, open source Scout codes cipher machine."
-                                   "<p>Copyright © 2016, Diana Capela and João Santos.</p>"));
+                                   "Qt based, open source Scout codes cipher machine."
+                                   "<p>Version: %1</p>"
+                                   "<p>Copyright © 2015 - 2018, Diana Capela and João Santos.</p>")).arg(SCOUTTALKER_VERSION);
 
     QMessageBox::about(this, QString(tr("About Scout Talker")), aboutText);
 }

@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/Qt_logo_2015.png</file>
-        <file>icons/logo.png</file>
+        <file alias="qt-logo.png">icons/Qt_logo_2015.png</file>
+        <file alias="scout-talker-logo.png">icons/scout-talker-logo.png</file>
+        <!--<file>icons/Qt_logo_2015.png</file>-->
+        <!--<file>icons/scout-talker-logo.png</file>-->
     </qresource>
 </RCC>
