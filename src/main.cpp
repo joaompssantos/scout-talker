@@ -1,5 +1,5 @@
-/* Scout Talker
- * Copyright (C) 2015 - 2017 by Diana Capela
+/* Scout Talker - Scouting codes, ciphers and encryption program
+ * Copyright (C) 2015 - 2018 by Diana Capela
  *                              João  Santos    (joaompssantos@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,19 +17,26 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "window.h"
-#include "scouttalker.h"
+#include "MainWindow.h"
+#include "ScoutTalker.h"
+#include "ScoutTalkerConfig.h"
 #include <QApplication>
 #include <QFontDatabase>
 //#include <QTranslator>
 //#include <QLibraryInfo>
 //#include <QLocale>
 
-int main(int argc, char *argv[])
-{
-    QApplication app(argc, argv);
+int main(int argc, char *argv[]) {
+    // Declaration of a new application
+    QApplication application(argc, argv);
+    // Set application name
+    QApplication::setApplicationName("Scout Talker");
+    // Set application version
+    QApplication::setApplicationVersion(SCOUTTALKER_VERSION);
+    // Set application organization name
+    QApplication::setOrganizationName("Diana Capela & João Santos");
 
-    // Add custom font to the application database
+    // Add custom font to the Scout Talker application
     QFontDatabase::addApplicationFont(":chinese-angular.ttf");
 
 //    /* load the system translations provided by Qt */
@@ -42,12 +49,12 @@ int main(int argc, char *argv[])
 //    myappTranslator.load("app" + QLocale::system().name());
 //    app.installTranslator(&myappTranslator);
 
-    Window window;
-    window.setWindowIcon(QIcon(":/icons/logo.png"));
-    window.show();
+    MainWindow mainWindow;
+    mainWindow.setWindowIcon(QIcon(":scout-talker-logo.png"));
+    mainWindow.show();
 
-    ScoutTalker *sctlk;
-    sctlk = new ScoutTalker(&window, NULL);
+    ScoutTalker *sctlk; // TODO: Reformulate these code lines
+    sctlk = new ScoutTalker(&mainWindow);
 
-    return app.exec();
+    return application.exec();
 }

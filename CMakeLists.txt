@@ -24,6 +24,7 @@ set(SCOUTTALKER_VERSION_MAJOR "0")
 set(SCOUTTALKER_VERSION_MINOR "1")
 set(SCOUTTALKER_VERSION_PATCH "0")
 set(SCOUTTALKER_VERSION "${SCOUTTALKER_VERSION_MAJOR}.${SCOUTTALKER_VERSION_MINOR}.${SCOUTTALKER_VERSION_PATCH}")
+set(SCOUTTALKER_VERSION "Alpha")
 
 ######################################################################################
 # Variables
@@ -128,14 +129,16 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 configure_file("${PROJECT_SOURCE_DIR}/src/ScoutTalkerConfig.h.in" "${PROJECT_BINARY_DIR}/ScoutTalkerConfig.h")
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
+include_directories(${PROJECT_SOURCE_DIR}/src/dialog)
 
 set(SCOUTTALKER_SRC
         src/main.cpp
-        src/window.cpp
-        src/window.h
-        src/scouttalker.cpp
-        src/scouttalker.h
-        )
+        src/MainWindow.cpp
+        src/MainWindow.h
+        src/ScoutTalker.cpp
+        src/ScoutTalker.h
+        src/dialog/AboutDialog.cpp
+        src/dialog/AboutDialog.h)
 
 set(SCOUTTALKER_RCC
         src/resources/fonts.qrc

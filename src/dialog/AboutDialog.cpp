@@ -17,12 +17,22 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef __SCOUTTALKER_CONFIG_H__
-#define __SCOUTTALKER_CONFIG_H__
+#include "AboutDialog.h"
+#include "MainWindow.h"
 
-#define SCOUTTALKER_VERSION_MAJOR @SCOUTTALKER_VERSION_MAJOR@
-#define SCOUTTALKER_VERSION_MINOR @SCOUTTALKER_VERSION_MINOR@
-#define SCOUTTALKER_VERSION_PATCH @SCOUTTALKER_VERSION_PATCH@
-#define SCOUTTALKER_VERSION "@SCOUTTALKER_VERSION@"
+#include <QApplication>
 
-#endif
+AboutDialog::AboutDialog() {
+    aboutText = QString(
+            tr("<p><h3>%1:</h3></p>"
+                       "Qt based, open source Scout codes cipher machine."
+                       "<p>Version: %2</p>"
+                       "<p>Copyright © 2015 - 2018, %3.</p>"))
+            .arg(QApplication::applicationName())
+            .arg(QApplication::applicationVersion())
+            .arg(QApplication::organizationName());
+}
+
+void AboutDialog::aboutScoutTalker() {
+    QMessageBox::about(parentWidget(), QString("About %1").arg(QApplication::applicationName()), aboutText);
+}

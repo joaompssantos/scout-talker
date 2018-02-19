@@ -1,5 +1,5 @@
-/* Scout Talker
- * Copyright (C) 2015 - 2017 by Diana Capela
+/* Scout Talker - Scouting codes, ciphers and encryption program
+ * Copyright (C) 2015 - 2018 by Diana Capela
  *                              João  Santos    (joaompssantos@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
@@ -21,16 +21,19 @@
 #define SCOUTTALKER_H
 
 #include <QObject>
-#include <QStringList>
 
 class QString;
-//class QStringList;
-class Window;
-class ScoutTalker : public QObject
-{
-    Q_OBJECT
+
+class QStringList;
+
+class MainWindow;
+
+class ScoutTalker : public QObject {
+
+Q_OBJECT
+
 public:
-    explicit ScoutTalker(Window *w, QObject *parent);
+    explicit ScoutTalker(MainWindow *w);
 
     // Methods / Functions
 private:
@@ -40,19 +43,25 @@ private:
     QString diacriticLetters_;
     QStringList noDiacriticLetters_;
 
-    Window *window;
+    MainWindow *mainWindow;
 
     // Methods / Functions
     void clearStrings();
+
     QString removeAccents(QString string);
+
     void encode();
+
     void encodeChineseCode();
+
     void encodeAngularCode();
+
     void encodeReverseAlphabet();
 
 signals:
 
 public slots:
+
     void encodeSlot();
 };
 

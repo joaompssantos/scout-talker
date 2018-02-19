@@ -17,12 +17,31 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef __SCOUTTALKER_CONFIG_H__
-#define __SCOUTTALKER_CONFIG_H__
+#ifndef ABOUTDIALOG_H
+#define ABOUTDIALOG_H
 
-#define SCOUTTALKER_VERSION_MAJOR @SCOUTTALKER_VERSION_MAJOR@
-#define SCOUTTALKER_VERSION_MINOR @SCOUTTALKER_VERSION_MINOR@
-#define SCOUTTALKER_VERSION_PATCH @SCOUTTALKER_VERSION_PATCH@
-#define SCOUTTALKER_VERSION "@SCOUTTALKER_VERSION@"
+#include <QObject>
 
-#endif
+#include <QMessageBox>
+
+class QString;
+
+class MainWindow;
+
+class AboutDialog : public QMessageBox {
+Q_OBJECT
+
+public:
+    AboutDialog();
+
+private:
+
+    QString aboutText;
+
+public slots:
+
+    void aboutScoutTalker();
+};
+
+
+#endif //ABOUTDIALOG_H
