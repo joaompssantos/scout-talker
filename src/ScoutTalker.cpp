@@ -53,7 +53,7 @@ QString ScoutTalker::removeAccents(QString string) {
     // Creates the output string
     QString output = "";
 
-    // Loop that iterates through the input string and replaces diacritic letters with their non-diacritic equivalen
+    // Loop that iterates through the input string and replaces diacritic letters with their non-diacritic equivalent
     for (int i = 0; i < string.length(); i++) {
         QChar ch = string[i];
         int dIndex = diacriticLetters_.indexOf(ch);

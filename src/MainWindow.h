@@ -49,6 +49,14 @@ public:
         All, Font, Image
     };
 
+    // File saving formats
+    enum savingFormats {
+        PNG = 0,
+        PDF,
+        doc,
+        txt
+    };
+
     // Methods / Functions
     MainWindow();
 
@@ -93,6 +101,14 @@ private:
     void createAngularCodeTab();
 
     void createReverseAlphabetTab();
+
+    void saveAsPNG(QTextEdit *textEdit, QString fileName);
+
+    void saveAsPDF(QTextEdit *textEdit, QString fileName);
+
+    void saveAsDoc(QTextEdit *textEdit, QString fileName);
+
+    void saveAsTxt(QTextEdit *textEdit, QString fileName);
 
     void saveFiles();
 

@@ -35,6 +35,7 @@
 #include <QPrinter>
 
 //Verificar se é para manter
+#include <iostream>
 #include <QTextDocument>
 #include <QTextDocumentWriter>
 //#include <QTabWidget>
@@ -59,7 +60,7 @@ MainWindow::MainWindow() {
     // Create Scout Talker about dialog
     m_pcAboutDialog = new AboutDialog(this);
 
-    // Creates titleGroupBox widget
+    // Creates title area widget
     createTitle();
     // Creates main text box widget
     createMainTextBox();
@@ -142,7 +143,7 @@ void MainWindow::setTextFont(QFont font) {
 }
 
 /** Private Methods **/
-// Method to create the main title
+// Method to create the title area
 void MainWindow::createTitle() {
     // Creates the group box
     titleGroupBox = new QGroupBox();
@@ -191,7 +192,7 @@ void MainWindow::createTitle() {
     titleGroupBox->setStyleSheet("QGroupBox {border: 0px solid gray;}");
 }
 
-// Method to create the Main Menu
+// Method to create the main menu
 void MainWindow::createMainMenu() {
     // Creates the push button main menu
     QMenu *mainMenu = new QMenu();
@@ -424,8 +425,139 @@ void MainWindow::createReverseAlphabetTab() {
     reverseAlphabet->setLayout(configCodecAreaWidgets(MainWindow::All));
 }
 
+
+void MainWindow::saveAsPNG(QTextEdit *textEdit, QString fileName) {
+    // Set text width
+    textEdit->document()->setTextWidth(580);
+
+    // Store original font size
+    int fontSize = textEdit->font().pointSize();
+
+    // Copy original font
+    QFont aux_font = textEdit->font();
+
+    // Add 10pt to original font size
+    aux_font.setPointSize(fontSize + 15);
+    textEdit->setFont(aux_font);
+
+    // Create image by calculating the size from QTextEdit
+    QImage *code = new QImage(
+            QSize(textEdit->document()->size().width() * 1.05, textEdit->document()->size().height() * 1.05),
+            QImage::Format_ARGB32_Premultiplied);
+
+    // Fill image with white
+    code->fill(Qt::white);
+
+    // Initialise QPainter
+    QPainter *painter = new QPainter(code);
+
+    // Set QPainter font
+    painter->setFont(textEdit->font());
+    // Set text colour
+    painter->setPen(mainTextBox->textColor());
+
+    // Draw text with painter to image (The text is justified, vertically centred and using word wrap to code->rect())
+    painter->drawText(
+            QRect(textEdit->document()->size().width() * 0.05 / 2, textEdit->document()->size().height() * 0.05 / 2,
+                  textEdit->document()->size().width(), textEdit->document()->size().height()),
+            Qt::AlignJustify | Qt::AlignVCenter | Qt::TextWordWrap, textEdit->toPlainText());
+
+    // Save image to file
+    code->save(fileName + ".png", "PNG");
+
+    // Restore original font size
+    aux_font.setPointSize(fontSize);
+    textEdit->setFont(aux_font);
+}
+
+void MainWindow::saveAsPDF(QTextEdit *textEdit, QString fileName) {
+    QTextDocument document;
+    document.setPlainText(textEdit->toPlainText());
+
+    // Set document size
+//        textEdit->document()->setTextWidth(580);
+    // TODO: PASSAR PARA TAMANHOS A4 (WIDTH) ESPECIALMENTE SE O TEXTO FOR MUITO GRANDE (HEIGHT)
+
+    // Store original font size
+    int fontSize = textEdit->font().pointSize();
+
+    // Copy original font
+    QFont aux_font = textEdit->font();
+
+    // Add 10pt to original font size
+    aux_font.setPointSize(textEdit->font().pointSize());
+    aux_font.setPointSize(15);
+    textEdit->setFont(aux_font);
+
+    // Calculate paper sizes
+    QSizeF pageSize = textEdit->document()->size();
+    pageSize.setWidth(pageSize.width() * 1.05);
+    pageSize.setHeight(pageSize.height() * 1.05);
+
+
+    pageSize.setWidth(QPrinter::A4);
+    pageSize.setHeight(QPrinter::A4);
+//        textEdit->document()->setTextWidth(pageSize.width() * 0.95);
+    // Set document size
+//        textEdit->document()->setPageSize(pageSize);
+
+    // Printer options
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(fileName + ".pdf");
+    printer.setFullPage(true);
+    printer.setPageSize(QPrinter::A4);
+    printer.setPageMargins(20, 20, 20, 20, QPrinter::Millimeter);
+//        printer.setPageSize(QPageSize(pageSize, QPageSize::Point, QString(), QPageSize::ExactMatch));
+    printer.setOutputFileName(fileName + ".pdf");
+
+    // Print PDF file
+//        textEdit->document()->setPageSize(printer.pageRect().size()); // To ignore page numbers
+//        textEdit->document()->print(&printer);
+
+//        document.setPageSize(printer.pageRect().size() * 0.5); // To ignore page numbers
+//        document.setPageSize(printer.paperRect().size());
+    document.setDefaultFont(textEdit->font());
+    printf("%d\n", textEdit->font().pointSize());
+    document.setPageSize(QPageSize::definitionSize(QPageSize::A4));
+//        document.setPageSize(QSizeF(QSize(210, 297, QPrinter::Millimeter)));
+    document.print(&printer);
+
+    // Restore original font size
+    aux_font.setPointSize(fontSize);
+    textEdit->setFont(aux_font);
+}
+
+void MainWindow::saveAsDoc(QTextEdit *textEdit, QString fileName) {
+    QTextDocument *textDocument = textEdit->document();
+
+    QTextDocumentWriter writer;
+    writer.setFormat("ODT");
+    writer.setFileName(fileName + ".odt");
+    writer.write(textDocument);
+}
+
+void MainWindow::saveAsTxt(QTextEdit *textEdit, QString fileName) {
+    // Open file to write
+    QFile file(fileName + ".txt");
+    file.open(QFile::WriteOnly);
+
+    // Initialise text stream
+    QTextStream write(&file);
+
+    // Write to file
+    write << textEdit->toPlainText();
+    write.flush();
+
+    // Close file
+    file.close();
+}
+
+// TODO: if file exists ask to replace; Create protections and checks (ex: check if file was successfully saved)
 void MainWindow::saveFiles() {
+    // Create new file dialog, named "Save as" and starting at the home directory
     QFileDialog *saveDialog = new QFileDialog(this, tr("Save as"), QDir::homePath(), "");
+    
     saveDialog->setAcceptMode(QFileDialog::AcceptSave);
     saveDialog->setFileMode(QFileDialog::AnyFile);
 
@@ -437,136 +569,42 @@ void MainWindow::saveFiles() {
     //            << "Text file (*.txt)";
 
     //saveDialog->setNameFilters(formats);
+
+    // Force use of OS native file dialog
     saveDialog->setOption(QFileDialog::DontUseNativeDialog, false);
 
+    // Get intended name of file
     QString fileName;
     if (saveDialog->exec()) {
         fileName = saveDialog->selectedFiles().at(0);
     }
 
-    // Confirmar (o nome do objeto a passar tem de ser definido com o método setObjectName)
+    // TODO: Confirmar (o nome do objeto a passar tem de ser definido com o método setObjectName)
     QList<QCheckBox *> savingOptionsCheckBoxes = codecAreaBox->currentWidget()->findChildren<QCheckBox *>();
 
+    // Get QTextEdit box
+    QTextEdit *textEdit = codecAreaBox->currentWidget()->findChild<QTextEdit *>();
+
     // Save as PNG
-    if (savingOptionsCheckBoxes.at(0)->checkState() == Qt::Checked) {
-        // Get QTextEdit box
-        QTextEdit *textEdit = codecAreaBox->currentWidget()->findChild<QTextEdit *>();
-
-        // Set text width
-        textEdit->document()->setTextWidth(580);
-
-        // Store original font size
-        int fontSize = textEdit->font().pointSize();
-
-        // Copy original font
-        QFont aux_font = textEdit->font();
-
-        // Add 10pt to original font size
-        aux_font.setPointSize(fontSize + 15);
-        textEdit->setFont(aux_font);
-
-        // Create image by calculating the size from QTextEdit
-        QImage *code = new QImage(
-                QSize(textEdit->document()->size().width() * 1.05, textEdit->document()->size().height() * 1.05),
-                QImage::Format_ARGB32_Premultiplied);
-
-        // Fill image with white
-        code->fill(Qt::white);
-
-        // Initialise QPainter
-        QPainter *painter = new QPainter(code);
-
-        // Set QPainter font
-        painter->setFont(textEdit->font());
-        // Set text colour
-        painter->setPen(mainTextBox->textColor());
-
-        // Draw text with painter to image (The text is justified, vertically centred and using word wrap to code->rect())
-        painter->drawText(
-                QRect(textEdit->document()->size().width() * 0.05 / 2, textEdit->document()->size().height() * 0.05 / 2,
-                      textEdit->document()->size().width(), textEdit->document()->size().height()),
-                Qt::AlignJustify | Qt::AlignVCenter | Qt::TextWordWrap, textEdit->toPlainText());
-
-        // Save image to file
-        code->save(fileName + ".png", "PNG");
-
-        // Restore original font size
-        aux_font.setPointSize(fontSize);
-        textEdit->setFont(aux_font);
+    if (savingOptionsCheckBoxes.at(savingFormats::PNG)->checkState() == Qt::Checked) {
+        saveAsPNG(textEdit, fileName);
     }
 
     // Save as PDF
-    if (savingOptionsCheckBoxes.at(1)->checkState() == Qt::Checked) {
-        // Get QTextEdit box
-        QTextEdit *textEdit = codecAreaBox->currentWidget()->findChild<QTextEdit *>();
-
-        // Set document size
-        textEdit->document()->setTextWidth(580);
-        // PASSAR PARA TAMANHOS A4 (WIDTH) ESPECIALMENTE SE O TEXTO FOR MUITO GRANDE (HEIGHT)
-
-        // Store original font size
-        int fontSize = textEdit->font().pointSize();
-
-        // Copy original font
-        QFont aux_font = textEdit->font();
-
-        // Add 10pt to original font size
-        aux_font.setPointSize(fontSize + 15);
-        textEdit->setFont(aux_font);
-
-        // Calculate paper sizes
-        QSizeF pageSize = textEdit->document()->size();
-        pageSize.setWidth(pageSize.width() * 1.05);
-        pageSize.setHeight(pageSize.height() * 1.05);
-
-        // Set document size
-        textEdit->document()->setPageSize(pageSize);
-
-        // Printer options
-        QPrinter printer(QPrinter::HighResolution);
-        printer.setOutputFormat(QPrinter::PdfFormat);
-        printer.setOutputFileName(fileName + ".pdf");
-        printer.setFullPage(true);
-        printer.setPageSize(QPageSize(pageSize, QPageSize::Point, QString(), QPageSize::ExactMatch));
-        printer.setOutputFileName(fileName + ".pdf");
-
-        // Print PDF file
-        textEdit->document()->print(&printer);
-
-        // Restore original font size
-        aux_font.setPointSize(fontSize);
-        textEdit->setFont(aux_font);
+    if (savingOptionsCheckBoxes.at(savingFormats::PDF)->checkState() == Qt::Checked) {
+        saveAsPDF(textEdit, fileName);
     }
 
-    // Save as Doc --> Talvez não seja possível!!
-    if (savingOptionsCheckBoxes.size() >= 3 && savingOptionsCheckBoxes.at(2)->checkState() == Qt::Checked) {
-        QTextEdit *textEdit = codecAreaBox->currentWidget()->findChild<QTextEdit *>();
-        QTextDocument *textDocument = textEdit->document();
-
-        QTextDocumentWriter writer;
-        writer.setFormat("ODT");
-        writer.setFileName(fileName + ".odt");
-        writer.write(textDocument);
+    // Save as odt
+    if (savingOptionsCheckBoxes.size() >= 3 &&
+        savingOptionsCheckBoxes.at(savingFormats::doc)->checkState() == Qt::Checked) {
+        saveAsDoc(textEdit, fileName);
     }
 
     // Save as txt
-    if (savingOptionsCheckBoxes.size() == 4 && savingOptionsCheckBoxes.at(3)->checkState() == Qt::Checked) {
-        // Get QTextEdit box
-        QTextEdit *textEdit = codecAreaBox->currentWidget()->findChild<QTextEdit *>();
-
-        // Open file to write
-        QFile file(fileName + ".txt");
-        file.open(QFile::WriteOnly);
-
-        // Initialise text stream
-        QTextStream write(&file);
-
-        // Write to file
-        write << textEdit->toPlainText();
-        write.flush();
-
-        // Close file
-        file.close();
+    if (savingOptionsCheckBoxes.size() == 4 &&
+        savingOptionsCheckBoxes.at(savingFormats::txt)->checkState() == Qt::Checked) {
+        saveAsTxt(textEdit, fileName);
     }
 }
 
