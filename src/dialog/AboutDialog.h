@@ -32,7 +32,7 @@ class AboutDialog : public QMessageBox {
 Q_OBJECT
 
 public:
-    AboutDialog();
+    AboutDialog(QWidget *parent);
 
 private:
 

@@ -22,7 +22,7 @@
 
 #include <QApplication>
 
-AboutDialog::AboutDialog() {
+AboutDialog::AboutDialog(QWidget *parent) : QMessageBox(parent) {
     aboutText = QString(
             tr("<p><h3>%1:</h3></p>"
                        "Qt based, open source Scout codes cipher machine."

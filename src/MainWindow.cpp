@@ -57,7 +57,7 @@ MainWindow::MainWindow() {
     QVBoxLayout *mainLayout = new QVBoxLayout;
 
     // Create Scout Talker about dialog
-    m_pcAboutDialog = new AboutDialog();
+    m_pcAboutDialog = new AboutDialog(this);
 
     // Creates titleGroupBox widget
     createTitle();
@@ -80,9 +80,7 @@ MainWindow::MainWindow() {
     setWindowTitle(QApplication::applicationName());
 }
 
-MainWindow::~MainWindow() {
-
-}
+MainWindow::~MainWindow() {}
 
 /** Getter methods **/
 // Returns the current selected tab
@@ -197,38 +195,45 @@ void MainWindow::createTitle() {
 void MainWindow::createMainMenu() {
     // Creates the push button main menu
     QMenu *mainMenu = new QMenu();
+    // Enables tool tips on main menu
+    mainMenu->setToolTipsVisible(true);
 
     // Add Change Font action to the menu
-    QAction *changeFontAction = mainMenu->addAction(tr("Change Font"));
-    // Sets shortcut for the exit action
-    //exitAction->setShortcuts(QKeySequence::Quit);
-    // Connects the exit action to the quit slot
+    QAction *changeFontAction = mainMenu->addAction(tr("Change &Font"));
+    // Sets tool tip for the action
+    changeFontAction->setToolTip(tr("Edit application font."));
+    // Connects the Change Font action to the Change Font slot
     connect(changeFontAction, SIGNAL(triggered()), this, SLOT(changeFontSlot()));
 
-    // Add Change Font action to the menu
-    QAction *changeColourAction = mainMenu->addAction(tr("Change Font Colour"));
-    // Sets shortcut for the exit action
-    //exitAction->setShortcuts(QKeySequence::Quit);
-    // Connects the exit action to the quit slot
+    // Add Change Colour action to the menu
+    QAction *changeColourAction = mainMenu->addAction(tr("Change Font &Colour"));
+    // Sets tool tip for the action
+    changeColourAction->setToolTip(tr("Edit application font colour."));
+    // Connects the Change Colour action to the Change Colour slot
     connect(changeColourAction, SIGNAL(triggered()), this, SLOT(changeColourSlot()));
 
-    //Add ABout Scout Talker action to the menu
+    //Add About Scout Talker action to the menu
     QAction *aboutScoutTalker = mainMenu->addAction(tr("About &Scout Talker"));
     // Sets icon for the action
     aboutScoutTalker->setIcon(QIcon(":scout-talker-logo.png"));
-
-    // Connects the action to the stInfo slot
+    // Sets tool tip for the action
+    aboutScoutTalker->setToolTip(tr("Show information about Scout Talker."));
+    // Connects the action to the aboutScoutTalker slot
     connect(aboutScoutTalker, SIGNAL(triggered()), m_pcAboutDialog, SLOT(aboutScoutTalker()));
 
     // Add About Qt action to the menu
     QAction *aboutQt = mainMenu->addAction(tr("About &Qt"));
     // Sets icon for the action
     aboutQt->setIcon(QIcon(":qt-logo.png"));
-    // Connects the action to the qtInfo slot
+    // Sets tool tip for the action
+    aboutQt->setToolTip(tr("Show information about Qt."));
+    // Connects the action to the aboutQt slot
     connect(aboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
     // Add Exit action to the menu
     QAction *exitAction = mainMenu->addAction(tr("E&xit"));
+    // Sets tool tip for the action
+    exitAction->setToolTip(tr("Quit Scout Talker."));
     // Sets shortcut for the exit action
     exitAction->setShortcuts(QKeySequence::Quit);
     // Connects the exit action to the quit slot
@@ -237,6 +242,8 @@ void MainWindow::createMainMenu() {
 
     // Creates push button that will contain the main logo
     mainMenuButton = new QPushButton();
+    // Sets main menu tool tip
+    mainMenuButton->setToolTip(tr("Opens Scout Talker main menu."));
 
     // Sets button size
     mainMenuButton->setFixedSize(100, 100);
@@ -296,12 +303,13 @@ QVBoxLayout *MainWindow::configCodecAreaWidgets(int type) {
     // Connect the encode button the run encode slot, that signals that the cipher should start
     connect(encodeButton, SIGNAL(clicked()), this, SLOT(runEncodeSlot()));
     // Adds tooltip to the encode button
-    encodeButton->setToolTip(QString(tr("Push to execute the ciphering process.")));
+    encodeButton->setToolTip(tr("Push to execute the ciphering process."));
 
     // Creates the help button for the top box
     QPushButton *helpButton = new QPushButton(tr("Help"));
     // Adds tooltip to the help button
-    helpButton->setToolTip(QString(tr("Push to show help for the current cipher.")));
+    helpButton->setToolTip(tr("Push to show help for the current cipher (NOT IMPLEMENTED)."));
+    // TODO: Implement help dialogs.
 
     // Add the widgets to the top box layout
     topBoxLayout->addWidget(encodeButton);
@@ -344,7 +352,7 @@ QVBoxLayout *MainWindow::configCodecAreaWidgets(int type) {
     // Connect the save button the save slot, that signals that the save procedures should start
     connect(saveButton, SIGNAL(clicked()), this, SLOT(saveSlot()));
     // Adds tooltip to the save button
-    saveButton->setToolTip(QString(tr("Push to save the result of the ciphering process.")));
+    saveButton->setToolTip(tr("Push to save the result of the ciphering process."));
 
     // Add the widgets to the bottom box layout
     bottomBoxLayout->addWidget(formatLabel);
