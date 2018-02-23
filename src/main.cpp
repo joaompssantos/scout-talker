@@ -53,8 +53,5 @@ int main(int argc, char *argv[]) {
     mainWindow.setWindowIcon(QIcon(":scout-talker-logo.png"));
     mainWindow.show();
 
-    ScoutTalker *sctlk; // TODO: Reformulate these code lines
-    sctlk = new ScoutTalker(&mainWindow);
-
     return application.exec();
 }

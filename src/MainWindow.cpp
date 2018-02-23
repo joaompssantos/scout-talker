@@ -35,8 +35,7 @@
 #include <QPrinter>
 
 //Verificar se é para manter
-#include <iostream>
-#include <QTextDocument>
+//#include <QTextDocument>
 #include <QTextDocumentWriter>
 //#include <QTabWidget>
 //#include <QMenuBar>
@@ -53,7 +52,10 @@
 #include <QFontDialog>
 #include <QColorDialog>
 
-MainWindow::MainWindow() {
+MainWindow::MainWindow() : m_scoutTalker(NULL) {
+    // Initiate ScoutTalker instance
+    m_scoutTalker = new ScoutTalker(this);
+
     // Main layout
     QVBoxLayout *mainLayout = new QVBoxLayout;
 
@@ -557,7 +559,7 @@ void MainWindow::saveAsTxt(QTextEdit *textEdit, QString fileName) {
 void MainWindow::saveFiles() {
     // Create new file dialog, named "Save as" and starting at the home directory
     QFileDialog *saveDialog = new QFileDialog(this, tr("Save as"), QDir::homePath(), "");
-    
+
     saveDialog->setAcceptMode(QFileDialog::AcceptSave);
     saveDialog->setFileMode(QFileDialog::AnyFile);
 

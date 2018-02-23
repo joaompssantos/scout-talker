@@ -24,6 +24,8 @@
 
 class AboutDialog;
 
+class ScoutTalker;
+
 class QPushButton;
 
 class QGroupBox;
@@ -60,7 +62,7 @@ public:
     // Methods / Functions
     MainWindow();
 
-    ~MainWindow();
+    ~MainWindow() override;
 
     // Getters
     availableTabs getTab();
@@ -84,6 +86,7 @@ private:
     QWidget *angularCode;
     QWidget *reverseAlphabet;
     AboutDialog *m_pcAboutDialog;
+    ScoutTalker *m_scoutTalker;
 
     // Methods / Functions
     void createTitle();
