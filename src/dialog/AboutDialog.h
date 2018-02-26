@@ -20,13 +20,9 @@
 #ifndef ABOUTDIALOG_H
 #define ABOUTDIALOG_H
 
-#include <QObject>
-
 #include <QMessageBox>
 
 class QString;
-
-class MainWindow;
 
 class AboutDialog : public QMessageBox {
 Q_OBJECT

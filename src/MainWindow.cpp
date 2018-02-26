@@ -18,39 +18,25 @@
  */
 
 #include "MainWindow.h"
-#include "ScoutTalker.h"
-#include "AboutDialog.h"
 
-// Comment each one
+#include "AboutDialog.h"
+#include "ScoutTalker.h"
+
 #include <QApplication>
-#include <QPushButton>
-#include <QVBoxLayout>
+#include <QCheckBox>
+#include <QColorDialog>
+#include <QFileDialog>
+#include <QFontDialog>
 #include <QGroupBox>
 #include <QLabel>
-#include <QTextEdit>
-#include <QCheckBox>
 #include <QMenu>
-//#include <QMessageBox>
-#include <QFileDialog>
-#include <QPrinter>
-
-//Verificar se é para manter
-//#include <QTextDocument>
-#include <QTextDocumentWriter>
-//#include <QTabWidget>
-//#include <QMenuBar>
-//#include <QHBoxLayout>
-//#include <QGroupBox>
-//#include <QFont>
-//#include <QSpacerItem>
-//#include <QSize>
-//#include <QFile>
 #include <QPainter>
-#include <QAbstractTextDocumentLayout>
-#include <QPageSize>
+#include <QPrinter>
+#include <QPushButton>
+#include <QTextDocumentWriter>
+#include <QTextEdit>
 #include <QTextStream>
-#include <QFontDialog>
-#include <QColorDialog>
+#include <QVBoxLayout>
 
 MainWindow::MainWindow() : m_scoutTalker(NULL) {
     // Initiate ScoutTalker instance

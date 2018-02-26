@@ -22,10 +22,6 @@
 
 #include <QObject>
 
-class QString;
-
-class QStringList;
-
 class MainWindow;
 
 class ScoutTalker : public QObject {

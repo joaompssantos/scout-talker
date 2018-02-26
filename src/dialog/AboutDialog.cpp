@@ -18,7 +18,6 @@
  */
 
 #include "AboutDialog.h"
-#include "MainWindow.h"
 
 #include <QApplication>
 

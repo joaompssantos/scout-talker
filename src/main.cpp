@@ -18,10 +18,11 @@
  */
 
 #include "MainWindow.h"
-#include "ScoutTalker.h"
 #include "ScoutTalkerConfig.h"
+
 #include <QApplication>
 #include <QFontDatabase>
+
 //#include <QTranslator>
 //#include <QLibraryInfo>
 //#include <QLocale>

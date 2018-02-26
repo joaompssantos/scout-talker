@@ -18,10 +18,12 @@
  */
 
 #include "ScoutTalker.h"
+
 #include "MainWindow.h"
-#include <QChar>
-#include <QString>
-#include <QStringList>
+
+//#include <QChar>
+//#include <QString>
+//#include <QStringList>
 
 ScoutTalker::ScoutTalker(MainWindow *w) {
     toEncodeString = new QString("");

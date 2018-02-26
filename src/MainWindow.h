@@ -22,17 +22,20 @@
 
 #include <QMainWindow>
 
+
 class AboutDialog;
 
 class ScoutTalker;
 
-class QPushButton;
 
 class QGroupBox;
+
+class QPushButton;
 
 class QTextEdit;
 
 class QVBoxLayout;
+
 
 class MainWindow : public QWidget {
 
