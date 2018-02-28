@@ -38,15 +38,20 @@
 #include <QTextStream>
 #include <QVBoxLayout>
 
-MainWindow::MainWindow() : m_scoutTalker(NULL) {
+#include <QDebug>
+
+MainWindow::MainWindow() : scoutTalker(NULL) {
     // Initiate ScoutTalker instance
-    m_scoutTalker = new ScoutTalker(this);
+    scoutTalker = new ScoutTalker(this);
+
+    qApp->installTranslator(&translatorMainWindow);
+    qApp->installTranslator(&translatorQt);
 
     // Main layout
     QVBoxLayout *mainLayout = new QVBoxLayout;
 
     // Create Scout Talker about dialog
-    m_pcAboutDialog = new AboutDialog(this);
+    aboutDialog = new AboutDialog(this);
 
     // Creates title area widget
     createTitle();
@@ -67,6 +72,9 @@ MainWindow::MainWindow() : m_scoutTalker(NULL) {
 
     // Set the window title
     setWindowTitle(QApplication::applicationName());
+
+    // Apply initial texts to MainWindow
+    translateMainWindow();
 }
 
 MainWindow::~MainWindow() {}
@@ -85,7 +93,7 @@ QString MainWindow::getToEncodeString() {
 /** Setter methods **/
 // Sets the string for the codec area text field
 void MainWindow::setEncodedString(QString string) {
-    // Confirmar (o nome do objeto a passar tem de ser definido com o método setObjectName)
+    // TODO: Confirmar (o nome do objeto a passar tem de ser definido com o método setObjectName)
     QTextEdit *currentTextBox = codecAreaBox->currentWidget()->findChild<QTextEdit *>();
     currentTextBox->setText(string);
 }
@@ -153,6 +161,9 @@ void MainWindow::createTitle() {
     // Changes the label font
     mainTitle->setFont(font);
 
+    // Create Main Window actions
+    createActions();
+
     // Creates the main menu
     createMainMenu();
 
@@ -180,6 +191,42 @@ void MainWindow::createTitle() {
     titleGroupBox->setStyleSheet("QGroupBox {border: 0px solid gray;}");
 }
 
+void MainWindow::createActions() {
+    // Resize action list
+    mainWindowActions.resize(totalAction);
+
+    // Change font action
+    mainWindowActions[changeFontAction] = new QAction(this);
+    // Connects the Change Font action to the Change Font slot
+    connect(mainWindowActions[changeFontAction], SIGNAL(triggered()), this, SLOT(changeFontSlot()));
+
+    // Change font colour action
+    mainWindowActions[changeFontColourAction] = new QAction(this);
+    // Connects the Change Colour action to the Change Colour slot
+    connect(mainWindowActions[changeFontColourAction], SIGNAL(triggered()), this, SLOT(changeColourSlot()));
+
+    // About Scout Talker action
+    mainWindowActions[aboutScoutTalkerAction] = new QAction(this);
+    // Sets icon for the action
+    mainWindowActions[aboutScoutTalkerAction]->setIcon(QIcon(":scout-talker-logo.png"));
+    // Connects the action to the aboutScoutTalker slot
+    connect(mainWindowActions[aboutScoutTalkerAction], SIGNAL(triggered()), aboutDialog, SLOT(aboutScoutTalker()));
+
+    // About Qt action
+    mainWindowActions[aboutQtAction] = new QAction(this);
+    // Sets icon for the action
+    mainWindowActions[aboutQtAction]->setIcon(QIcon(":qt-logo.png"));
+    // Connects the action to the aboutQt slot
+    connect(mainWindowActions[aboutQtAction], SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+
+    // Exit Scout Talker action
+    mainWindowActions[exitAction] = new QAction(this);
+    // Sets shortcut for the exit action
+    mainWindowActions[exitAction]->setShortcuts(QKeySequence::Quit);
+    // Connects the exit action to the quit slot
+    connect(mainWindowActions[exitAction], SIGNAL(triggered()), qApp, SLOT(quit()));
+}
+
 // Method to create the main menu
 void MainWindow::createMainMenu() {
     // Creates the push button main menu
@@ -187,52 +234,26 @@ void MainWindow::createMainMenu() {
     // Enables tool tips on main menu
     mainMenu->setToolTipsVisible(true);
 
+    // Add actions to the menu
     // Add Change Font action to the menu
-    QAction *changeFontAction = mainMenu->addAction(tr("Change &Font"));
-    // Sets tool tip for the action
-    changeFontAction->setToolTip(tr("Edit application font."));
-    // Connects the Change Font action to the Change Font slot
-    connect(changeFontAction, SIGNAL(triggered()), this, SLOT(changeFontSlot()));
-
+    mainMenu->addAction(mainWindowActions[changeFontAction]);
     // Add Change Colour action to the menu
-    QAction *changeColourAction = mainMenu->addAction(tr("Change Font &Colour"));
-    // Sets tool tip for the action
-    changeColourAction->setToolTip(tr("Edit application font colour."));
-    // Connects the Change Colour action to the Change Colour slot
-    connect(changeColourAction, SIGNAL(triggered()), this, SLOT(changeColourSlot()));
+    mainMenu->addAction(mainWindowActions[changeFontColourAction]);
+
+    // Create and add change language action to the menu
+    createLanguageMenu();
+    mainMenu->addMenu(changeLanguageMenu);
 
     //Add About Scout Talker action to the menu
-    QAction *aboutScoutTalker = mainMenu->addAction(tr("About &Scout Talker"));
-    // Sets icon for the action
-    aboutScoutTalker->setIcon(QIcon(":scout-talker-logo.png"));
-    // Sets tool tip for the action
-    aboutScoutTalker->setToolTip(tr("Show information about Scout Talker."));
-    // Connects the action to the aboutScoutTalker slot
-    connect(aboutScoutTalker, SIGNAL(triggered()), m_pcAboutDialog, SLOT(aboutScoutTalker()));
-
+    mainMenu->addAction(mainWindowActions[aboutScoutTalkerAction]);
     // Add About Qt action to the menu
-    QAction *aboutQt = mainMenu->addAction(tr("About &Qt"));
-    // Sets icon for the action
-    aboutQt->setIcon(QIcon(":qt-logo.png"));
-    // Sets tool tip for the action
-    aboutQt->setToolTip(tr("Show information about Qt."));
-    // Connects the action to the aboutQt slot
-    connect(aboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
-
+    mainMenu->addAction(mainWindowActions[aboutQtAction]);
     // Add Exit action to the menu
-    QAction *exitAction = mainMenu->addAction(tr("E&xit"));
-    // Sets tool tip for the action
-    exitAction->setToolTip(tr("Quit Scout Talker."));
-    // Sets shortcut for the exit action
-    exitAction->setShortcuts(QKeySequence::Quit);
-    // Connects the exit action to the quit slot
-    connect(exitAction, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
+    mainMenu->addAction(mainWindowActions[exitAction]);
 
 
     // Creates push button that will contain the main logo
     mainMenuButton = new QPushButton();
-    // Sets main menu tool tip
-    mainMenuButton->setToolTip(tr("Opens Scout Talker main menu."));
 
     // Sets button size
     mainMenuButton->setFixedSize(100, 100);
@@ -295,10 +316,9 @@ QVBoxLayout *MainWindow::configCodecAreaWidgets(int type) {
     encodeButton->setToolTip(tr("Push to execute the ciphering process."));
 
     // Creates the help button for the top box
-    QPushButton *helpButton = new QPushButton(tr("Help"));
+    helpButton = new QPushButton(tr("Help")); // TODO: Implement help dialogs.
     // Adds tooltip to the help button
     helpButton->setToolTip(tr("Push to show help for the current cipher (NOT IMPLEMENTED)."));
-    // TODO: Implement help dialogs.
 
     // Add the widgets to the top box layout
     topBoxLayout->addWidget(encodeButton);
@@ -331,10 +351,10 @@ QVBoxLayout *MainWindow::configCodecAreaWidgets(int type) {
     QLabel *formatLabel = new QLabel(tr("Format:"));
 
     // Creates saving options checkboxes for the bottom box
-    QCheckBox *pngButton = new QCheckBox(tr("PNG"));
-    QCheckBox *pdfButton = new QCheckBox(tr("PDF"));
-    QCheckBox *wordButton = new QCheckBox(tr("Doc"));
-    QCheckBox *txtButton = new QCheckBox(tr("txt"));
+    QCheckBox *pngButton = new QCheckBox("PNG");
+    QCheckBox *pdfButton = new QCheckBox("PDF");
+    QCheckBox *wordButton = new QCheckBox("Doc");
+    QCheckBox *txtButton = new QCheckBox("txt");
 
     // Create the save button of the bottom box
     QPushButton *saveButton = new QPushButton(tr("Save"));
@@ -412,7 +432,6 @@ void MainWindow::createReverseAlphabetTab() {
     // Sets the layout for the chinese code
     reverseAlphabet->setLayout(configCodecAreaWidgets(MainWindow::All));
 }
-
 
 void MainWindow::saveAsPNG(QTextEdit *textEdit, QString fileName) {
     // Set text width
@@ -544,7 +563,7 @@ void MainWindow::saveAsTxt(QTextEdit *textEdit, QString fileName) {
 // TODO: if file exists ask to replace; Create protections and checks (ex: check if file was successfully saved)
 void MainWindow::saveFiles() {
     // Create new file dialog, named "Save as" and starting at the home directory
-    QFileDialog *saveDialog = new QFileDialog(this, tr("Save as"), QDir::homePath(), "");
+    QFileDialog *saveDialog = new QFileDialog(this, tr("Save as..."), QDir::homePath(), "");
 
     saveDialog->setAcceptMode(QFileDialog::AcceptSave);
     saveDialog->setFileMode(QFileDialog::AnyFile);
@@ -622,4 +641,88 @@ void MainWindow::changeColourSlot() {
 // Slot to run the save procedures
 void MainWindow::saveSlot() {
     saveFiles();
+}
+
+// Creates the language menu entries dynamically depending on the existing translations
+void MainWindow::createLanguageMenu() {
+    // Creates the language menu
+    changeLanguageMenu = new QMenu(this);
+
+    // Created the translation action group
+    QActionGroup *translationActionGroup = new QActionGroup(this);
+
+    // Connect the translation actions to the switch language slot
+    connect(translationActionGroup, SIGNAL(triggered(QAction * )), this, SLOT(switchLanguageSlot(QAction * )));
+
+    // Define translations path
+    languageTranslationsPath = QApplication::applicationDirPath();
+    QDir dir(languageTranslationsPath);
+
+    // Get list of translation file names
+    QStringList fileNames = dir.entryList(QStringList("ScoutTalker_*.qm"));
+
+    // Loop translation files list
+    for (int i = 0; i < fileNames.size(); ++i) {
+        // Get locale extracted by filename
+        QString locale = fileNames[i]; // "TranslationExample_pt_PT.qm"
+        locale.truncate(locale.lastIndexOf('.')); // "TranslationExample_pt_PT"
+        locale.remove(0, locale.indexOf('_') + 1); // "pt"
+
+        // Language name and flag
+        QString language = QLocale::languageToString(QLocale(locale).language());
+        QIcon flag(QString(":%1.png").arg(locale));
+
+        QAction *action = new QAction(flag, QString("&%1").arg(language), this); // TODO: Find how to translate this
+        action->setCheckable(true);
+        action->setData(locale);
+
+        changeLanguageMenu->addAction(action);
+        translationActionGroup->addAction(action);
+
+        if (language == "English") {
+            action->setChecked(true);
+        }
+    }
+}
+
+// Language switch slot
+void MainWindow::switchLanguageSlot(QAction *action) {
+    // Load the language dependant on the action content
+    QString locale = action->data().toString();
+
+    // Load translators
+    translatorMainWindow.load("ScoutTalker_" + locale + ".qm");
+    translatorQt.load("qt_" + locale + ".qm");
+
+    // Translate MainWindow texts to the selected language
+    translateMainWindow();
+}
+
+// Applies text and translations to MainWindow
+void MainWindow::translateMainWindow() {
+    // Menus text
+    changeLanguageMenu->setTitle(tr("&Language"));
+    changeLanguageMenu->setToolTip(tr("Language selection menu."));
+
+    // Actions text
+    mainWindowActions[changeFontAction]->setText(tr("Change &Font"));
+    mainWindowActions[changeFontAction]->setToolTip(tr("Edit application font."));
+
+    mainWindowActions[changeFontColourAction]->setText(tr("Change Font &Colour"));
+    mainWindowActions[changeFontColourAction]->setToolTip(tr("Edit application font colour."));
+
+    mainWindowActions[aboutScoutTalkerAction]->setText(tr("About &Scout Talker"));
+    mainWindowActions[aboutScoutTalkerAction]->setToolTip(tr("Show information about Scout Talker."));
+
+    mainWindowActions[aboutQtAction]->setText(tr("About &Qt"));
+    mainWindowActions[aboutQtAction]->setToolTip(tr("Show information about Qt."));
+
+    mainWindowActions[exitAction]->setText(tr("E&xit"));
+    mainWindowActions[exitAction]->setToolTip(tr("Quit Scout Talker."));
+
+    // Buttons text
+    mainMenuButton->setToolTip(tr("Opens Scout Talker main menu."));
+
+    helpButton->setText(tr("Help"));
+    helpButton->setToolTip(tr("Push to show help for the current cipher (NOT IMPLEMENTED)."));
 }

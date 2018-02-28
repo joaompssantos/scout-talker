@@ -23,10 +23,6 @@
 #include <QApplication>
 #include <QFontDatabase>
 
-//#include <QTranslator>
-//#include <QLibraryInfo>
-//#include <QLocale>
-
 int main(int argc, char *argv[]) {
     // Declaration of a new application
     QApplication application(argc, argv);
@@ -40,19 +36,11 @@ int main(int argc, char *argv[]) {
     // Add custom font to the Scout Talker application
     QFontDatabase::addApplicationFont(":chinese-angular.ttf");
 
-//    /* load the system translations provided by Qt */
-//    QTranslator qtTranslator;
-//    qtTranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-//    app.installTranslator(&qtTranslator);
-
-//    /* load our custom translations for this application */
-//    QTranslator myappTranslator;
-//    myappTranslator.load("app" + QLocale::system().name());
-//    app.installTranslator(&myappTranslator);
-
+    // Create new MainWindow instance
     MainWindow mainWindow;
     mainWindow.setWindowIcon(QIcon(":scout-talker-logo.png"));
     mainWindow.show();
 
+    // Run application
     return application.exec();
 }

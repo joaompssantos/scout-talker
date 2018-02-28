@@ -2,7 +2,7 @@
     <qresource prefix="/">
         <file alias="qt-logo.png">icons/Qt_logo_2015.png</file>
         <file alias="scout-talker-logo.png">icons/scout-talker-logo.png</file>
-        <!--<file>icons/Qt_logo_2015.png</file>-->
-        <!--<file>icons/scout-talker-logo.png</file>-->
+        <file alias="pt_PT.png">icons/pt-flag.png</file>
+        <file alias="en_UK.png">icons/uk-flag.png</file>
     </qresource>
 </RCC>

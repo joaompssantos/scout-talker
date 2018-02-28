@@ -113,7 +113,7 @@ set(CMAKE_CXX_FLAGS "-funroll-loops -Wall -Wextra" CACHE STRING "compile flags" 
 # Set extra warnigns
 if (USE_EXTRA_WARNINGS)
     string(CONCAT CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wfloat-equal -Wundef -Wshadow -Wpointer-arith -Wcast-align "
-                                  "-Wstrict-prototypes -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code")
+            "-Wstrict-prototypes -Wswitch-default -Wswitch-enum -Wconversion -Wunreachable-code")
 endif ()
 
 # Set warnings as errors
@@ -145,12 +145,20 @@ set(SCOUTTALKER_RCC
         src/resources/icons.qrc
         )
 
+set(SCOUTTALKER_TS
+        src/translations/ScoutTalker_en_UK.ts
+        src/translations/ScoutTalker_pt_PT.ts
+        )
+
 # Find the QtWidgets library
+find_package(Qt5LinguistTools)
 find_package(Qt5 REQUIRED COMPONENTS Widgets PrintSupport)
 
 qt5_add_resources(SCOUTTALKER_RCC ${SCOUTTALKER_RCC})
 
-add_executable(${PROJECT_NAME} ${SCOUTTALKER_SRC} ${SCOUTTALKER_RCC})
+qt5_add_translation(SCOUTTALKER_QM ${SCOUTTALKER_TS})
+
+add_executable(${PROJECT_NAME} ${SCOUTTALKER_SRC} ${SCOUTTALKER_RCC} ${SCOUTTALKER_QM})
 
 target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::PrintSupport)
 

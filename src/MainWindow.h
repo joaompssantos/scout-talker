@@ -21,7 +21,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include <QTranslator>
 
 class AboutDialog;
 
@@ -40,6 +40,10 @@ class QVBoxLayout;
 class MainWindow : public QWidget {
 
 Q_OBJECT
+
+protected:
+    // This event is called, when a new translator is loaded or the system language is changed
+//    void changeEvent(QEvent *);
 
 public:
     // Variables
@@ -81,17 +85,42 @@ public:
 
 private:
     // Variables
-    QGroupBox *titleGroupBox;
+    AboutDialog *aboutDialog;
+
+    // Menu variables
     QPushButton *mainMenuButton;
+    QMenu *changeLanguageMenu;
+
+    QGroupBox *titleGroupBox;
     QTextEdit *mainTextBox;
     QTabWidget *codecAreaBox;
     QWidget *chineseCode;
     QWidget *angularCode;
     QWidget *reverseAlphabet;
-    AboutDialog *m_pcAboutDialog;
-    ScoutTalker *m_scoutTalker;
+    ScoutTalker *scoutTalker;
+    QPushButton *helpButton;
+
+    // Actions variables
+    enum mainWindowActionList {
+        changeFontAction = 0,
+        changeFontColourAction,
+        aboutScoutTalkerAction,
+        aboutQtAction,
+        exitAction,
+        totalAction
+    };
+
+    QVector<QAction *> mainWindowActions;
+
+    // Translation variables
+    QTranslator translatorMainWindow; // Contains the translations for this application
+    QTranslator translatorQt; // Contains the translations for qt
+    QString m_currLang; // Contains the currently loaded language TODO: implement this
+    QString languageTranslationsPath; // Path of language files. This is always fixed to /languages. TODO: Check this.
 
     // Methods / Functions
+    void createActions();
+
     void createTitle();
 
     void createMainMenu();
@@ -118,9 +147,18 @@ private:
 
     void saveFiles();
 
+    void createLanguageMenu();
+
+    void translateMainWindow();
+
 signals:
 
     void startEncode();
+
+protected slots:
+
+    // This slot is called by the language menu actions
+    void switchLanguageSlot(QAction *action);
 
 public slots:
 

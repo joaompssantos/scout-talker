@@ -17,10 +17,13 @@ SOURCES += main.cpp \
     window.cpp
 
 
-HEADERS  += \
+HEADERS += \
     scouttalker.h \
     window.h
 
 RESOURCES += \
     resources/icons.qrc \
     resources/fonts.qrc
+
+TRANSLATIONS += \
+    resources/translations/ScoutTalker_pt_PT.ts
