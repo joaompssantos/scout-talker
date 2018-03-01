@@ -36,15 +36,15 @@ private:
     // Variables
     QString *toEncodeString;
     QString *encodedString;
-    QString diacriticLetters_;
-    QStringList noDiacriticLetters_;
+    QString diacriticLetters;
+    QStringList nonDiacriticLetters;
 
     MainWindow *mainWindow;
 
     // Methods / Functions
     void clearStrings();
 
-    QString removeAccents(QString string);
+    QString removeDiacriticLetters(QString string);
 
     void encode();
 

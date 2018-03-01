@@ -98,7 +98,6 @@ private:
     QWidget *angularCode;
     QWidget *reverseAlphabet;
     ScoutTalker *scoutTalker;
-    QPushButton *helpButton;
 
     // Actions variables
     enum mainWindowActionList {

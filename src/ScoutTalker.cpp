@@ -36,11 +36,11 @@ void ScoutTalker::clearStrings() {
 }
 
 // Method to remove diacritic letters, such as ç or á
-QString ScoutTalker::removeAccents(QString string) {
+QString ScoutTalker::removeDiacriticLetters(QString string) {
     // Check if the diacritic letters string has already been created. If not the string is now populated.
-    if (diacriticLetters_.isEmpty()) {
-        diacriticLetters_ = QString::fromUtf8("ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ");
-        noDiacriticLetters_ << "S" << "OE" << "Z" << "s" << "oe" << "z" << "Y" << "Y" << "u" << "A" << "A" << "A" << "A"
+    if (diacriticLetters.isEmpty()) {
+        diacriticLetters = QString::fromUtf8("ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ");
+        nonDiacriticLetters << "S" << "OE" << "Z" << "s" << "oe" << "z" << "Y" << "Y" << "u" << "A" << "A" << "A" << "A"
                             << "A" << "A" << "AE" << "C" << "E" << "E" << "E" << "E" << "I" << "I" << "I" << "I" << "D"
                             << "N" << "O" << "O" << "O" << "O" << "O" << "O" << "U" << "U" << "U" << "U" << "Y" << "s"
                             << "a" << "a" << "a" << "a" << "a" << "a" << "ae" << "c" << "e" << "e" << "e" << "e" << "i"
@@ -54,12 +54,12 @@ QString ScoutTalker::removeAccents(QString string) {
     // Loop that iterates through the input string and replaces diacritic letters with their non-diacritic equivalent
     for (int i = 0; i < string.length(); i++) {
         QChar ch = string[i];
-        int dIndex = diacriticLetters_.indexOf(ch);
+        int dIndex = diacriticLetters.indexOf(ch);
 
         if (dIndex < 0) {
             output.append(ch);
         } else {
-            QString replacement = noDiacriticLetters_[dIndex];
+            QString replacement = nonDiacriticLetters[dIndex];
             output.append(replacement);
         }
     }
@@ -73,7 +73,7 @@ void ScoutTalker::encode() {
     clearStrings();
 
     // Read the string to encode from the window object and remove diatritic letters
-    toEncodeString->append(removeAccents(mainWindow->getToEncodeString()));
+    toEncodeString->append(removeDiacriticLetters(mainWindow->getToEncodeString()));
 
     // Gets current tab from the window object
     MainWindow::availableTabs currentTab = mainWindow->getTab();

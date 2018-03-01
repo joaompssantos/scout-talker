@@ -20,7 +20,7 @@ These formats depend on the used code as not all the codes can be saved in all t
 ## Available languages
 
 - [X] English
-- [ ] Portuguese
+- [X] Portuguese
 
 ## Other features:
 
@@ -31,5 +31,5 @@ These formats depend on the used code as not all the codes can be saved in all t
 - [ ] Implement help windows for each available code
 - [ ] Implement codes tabs as class
 - [ ] Add extra codes
-- [ ] Complete portuguese translation
+- [X] Complete portuguese translation
 - [ ] Improve PDF format page size choice

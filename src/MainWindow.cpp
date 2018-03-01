@@ -42,6 +42,7 @@ MainWindow::MainWindow() : scoutTalker(NULL) {
     // Initiate ScoutTalker instance
     scoutTalker = new ScoutTalker(this);
 
+    // Install application and Qt translators
     qApp->installTranslator(&translatorMainWindow);
     qApp->installTranslator(&translatorQt);
 
@@ -59,9 +60,9 @@ MainWindow::MainWindow() : scoutTalker(NULL) {
     createCodecAreaBox();
 
     // Add the widgets to the main layout
-    mainLayout->addWidget(titleGroupBox);
-    mainLayout->addWidget(mainTextBox);
-    mainLayout->addWidget(codecAreaBox);
+    mainLayout->addWidget(titleGroupBox); // Area with Scout Talker title, logo and menu
+    mainLayout->addWidget(mainTextBox); // Area with text to translate
+    mainLayout->addWidget(codecAreaBox); // Area with the codes tabs
 
     // Sets the margins for main layout
     mainLayout->setMargin(25);
@@ -189,6 +190,7 @@ void MainWindow::createTitle() {
     titleGroupBox->setStyleSheet("QGroupBox {border: 0px solid gray;}");
 }
 
+// Method to create actions
 void MainWindow::createActions() {
     // Resize action list
     mainWindowActions.resize(totalAction);
@@ -271,10 +273,9 @@ void MainWindow::createMainMenu() {
     mainMenuButton->setMenu(mainMenu);
 }
 
-// Method to create and customise the main text box
+// Method to create and customise the main text box TODO: Check if it should be removed
 void MainWindow::createMainTextBox() {
     mainTextBox = new QTextEdit();
-    mainTextBox->setText(tr("Insert text to encode..."));
 }
 
 // Method to create the codec area box
@@ -282,7 +283,7 @@ void MainWindow::createCodecAreaBox() {
     // Creates the tab widget
     codecAreaBox = new QTabWidget();
 
-    // Style for the tabs --> VERIFICAR SE É PARA MANTER
+    // Style for the tabs --> TODO: VERIFICAR SE É PARA MANTER (Ver no windows)
     codecAreaBox->setStyleSheet("QTabWidget::pane { border: 1px solid gray;}");
 
     // Configure the widgets of each code
@@ -307,16 +308,12 @@ QVBoxLayout *MainWindow::configCodecAreaWidgets(int type) {
     QHBoxLayout *topBoxLayout = new QHBoxLayout;
 
     // Creates the encode button for the top box
-    QPushButton *encodeButton = new QPushButton(tr("Cipher"));
+    QPushButton *encodeButton = new QPushButton();
     // Connect the encode button the run encode slot, that signals that the cipher should start
     connect(encodeButton, SIGNAL(clicked()), this, SLOT(runEncodeSlot()));
-    // Adds tooltip to the encode button
-    encodeButton->setToolTip(tr("Push to execute the ciphering process."));
 
     // Creates the help button for the top box
-    helpButton = new QPushButton(tr("Help")); // TODO: Implement help dialogs.
-    // Adds tooltip to the help button
-    helpButton->setToolTip(tr("Push to show help for the current cipher (NOT IMPLEMENTED)."));
+    QPushButton *helpButton = new QPushButton(); // TODO: Implement help dialogs.
 
     // Add the widgets to the top box layout
     topBoxLayout->addWidget(encodeButton);
@@ -341,7 +338,7 @@ QVBoxLayout *MainWindow::configCodecAreaWidgets(int type) {
 
 
     // Bottom Box
-    QGroupBox *bottomBox = new QGroupBox(tr("Save options"));
+    QGroupBox *bottomBox = new QGroupBox();
     // Bottom box layout
     QHBoxLayout *bottomBoxLayout = new QHBoxLayout;
 
@@ -355,11 +352,9 @@ QVBoxLayout *MainWindow::configCodecAreaWidgets(int type) {
     QCheckBox *txtButton = new QCheckBox("txt");
 
     // Create the save button of the bottom box
-    QPushButton *saveButton = new QPushButton(tr("Save"));
+    QPushButton *saveButton = new QPushButton();
     // Connect the save button the save slot, that signals that the save procedures should start
     connect(saveButton, SIGNAL(clicked()), this, SLOT(saveSlot()));
-    // Adds tooltip to the save button
-    saveButton->setToolTip(tr("Push to save the result of the ciphering process."));
 
     // Add the widgets to the bottom box layout
     bottomBoxLayout->addWidget(formatLabel);
@@ -718,9 +713,36 @@ void MainWindow::translateMainWindow() {
     mainWindowActions[exitAction]->setText(tr("E&xit"));
     mainWindowActions[exitAction]->setToolTip(tr("Quit Scout Talker."));
 
+    // Main box text
+    mainTextBox->setText(tr("Insert text to encode..."));
+
+    // Tabs label
+    codecAreaBox->setTabText(availableTabs::ChineseCode, tr("Chinese Code"));
+    codecAreaBox->setTabText(availableTabs::AngularCode, tr("Angular Code"));
+    codecAreaBox->setTabText(availableTabs::ReverseAlphabet, tr("Reverse Alphabet"));
+
     // Buttons text
     mainMenuButton->setToolTip(tr("Opens Scout Talker main menu."));
 
-    helpButton->setText(tr("Help"));
-    helpButton->setToolTip(tr("Push to show help for the current cipher (NOT IMPLEMENTED)."));
+    for (int i = 0; i < availableTabs::Last; i++) {
+        QList<QPushButton *> codecAreaButtons = codecAreaBox->widget(i)->findChildren<QPushButton *>();
+
+        // Adds cipher button text
+        codecAreaButtons.at(0)->setText(tr("Cipher"));
+        // Adds tooltip to the encode button
+        codecAreaButtons.at(0)->setToolTip(tr("Push to execute the ciphering process."));
+        // Add help button text
+        codecAreaButtons.at(1)->setText(tr("Help"));
+        // Adds tooltip to the help button
+        codecAreaButtons.at(1)->setToolTip(tr("Push to show help for the current cipher (NOT IMPLEMENTED)."));
+        // Adds save button text
+        codecAreaButtons.at(2)->setText(tr("Save"));
+        // Adds tooltip to the save button
+        codecAreaButtons.at(2)->setToolTip(tr("Push to save the result of the ciphering process."));
+
+        QList<QGroupBox *> bottomBox = codecAreaBox->widget(i)->findChildren<QGroupBox *>();
+        bottomBox.at(1)->setTitle(tr("Save options"));
+        QLabel *label = bottomBox.at(1)->findChild<QLabel *>();
+        label->setText(tr("Format:"));
+    }
 }
