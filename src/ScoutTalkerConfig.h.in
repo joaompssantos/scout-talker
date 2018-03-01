@@ -17,30 +17,12 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "MainWindow.h"
-#include "ScoutTalkerConfig.h"
+#ifndef __SCOUTTALKER_CONFIG_H__
+#define __SCOUTTALKER_CONFIG_H__
 
-#include <QApplication>
-#include <QFontDatabase>
+#define SCOUTTALKER_VERSION_MAJOR @SCOUTTALKER_VERSION_MAJOR@
+#define SCOUTTALKER_VERSION_MINOR @SCOUTTALKER_VERSION_MINOR@
+#define SCOUTTALKER_VERSION_PATCH @SCOUTTALKER_VERSION_PATCH@
+#define SCOUTTALKER_VERSION "@SCOUTTALKER_VERSION@"
 
-int main(int argc, char *argv[]) {
-    // Declaration of a new application
-    QApplication application(argc, argv);
-    // Set application name
-    QApplication::setApplicationName("Scout Talker");
-    // Set application version
-    QApplication::setApplicationVersion(SCOUTTALKER_VERSION);
-    // Set application organization name
-    QApplication::setOrganizationName("Diana Capela & João Santos");
-
-    // Add custom font to the Scout Talker application
-    QFontDatabase::addApplicationFont(":chinese-angular.ttf");
-
-    // Create new MainWindow instance
-    MainWindow mainWindow;
-    mainWindow.setWindowIcon(QIcon(":scout-talker-logo.png"));
-    mainWindow.show();
-
-    // Run application
-    return application.exec();
-}
+#endif

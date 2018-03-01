@@ -258,3 +258,8 @@ Makefile*
 # Dropbox
 ############
 .dropbox.attr
+
+############
+# Clion
+############
+.idea/

@@ -17,30 +17,48 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "MainWindow.h"
-#include "ScoutTalkerConfig.h"
+#ifndef SCOUTTALKER_H
+#define SCOUTTALKER_H
 
-#include <QApplication>
-#include <QFontDatabase>
+#include <QObject>
 
-int main(int argc, char *argv[]) {
-    // Declaration of a new application
-    QApplication application(argc, argv);
-    // Set application name
-    QApplication::setApplicationName("Scout Talker");
-    // Set application version
-    QApplication::setApplicationVersion(SCOUTTALKER_VERSION);
-    // Set application organization name
-    QApplication::setOrganizationName("Diana Capela & João Santos");
+class MainWindow;
 
-    // Add custom font to the Scout Talker application
-    QFontDatabase::addApplicationFont(":chinese-angular.ttf");
+class ScoutTalker : public QObject {
 
-    // Create new MainWindow instance
-    MainWindow mainWindow;
-    mainWindow.setWindowIcon(QIcon(":scout-talker-logo.png"));
-    mainWindow.show();
+Q_OBJECT
 
-    // Run application
-    return application.exec();
-}
+public:
+    explicit ScoutTalker(MainWindow *w);
+
+    // Methods / Functions
+private:
+    // Variables
+    QString *toEncodeString;
+    QString *encodedString;
+    QString diacriticLetters;
+    QStringList nonDiacriticLetters;
+
+    MainWindow *mainWindow;
+
+    // Methods / Functions
+    void clearStrings();
+
+    QString removeDiacriticLetters(QString string);
+
+    void encode();
+
+    void encodeChineseCode();
+
+    void encodeAngularCode();
+
+    void encodeReverseAlphabet();
+
+signals:
+
+public slots:
+
+    void encodeSlot();
+};
+
+#endif // SCOUTTALKER_H
