@@ -31,13 +31,19 @@ public:
     AboutDialog(QWidget *parent);
 
 private:
-
+    // Variables
     QString aboutText;
+    QString aboutDefinition;
+    QString aboutVersion;
+
+    // Methods
+    void translateAboutDialog();
+
+    void changeEvent(QEvent *event);
 
 public slots:
 
-    void aboutScoutTalker();
+    void aboutScoutTalkerSlot();
 };
-
 
 #endif //ABOUTDIALOG_H

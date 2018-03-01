@@ -38,8 +38,6 @@
 #include <QTextStream>
 #include <QVBoxLayout>
 
-#include <QDebug>
-
 MainWindow::MainWindow() : scoutTalker(NULL) {
     // Initiate ScoutTalker instance
     scoutTalker = new ScoutTalker(this);
@@ -209,8 +207,8 @@ void MainWindow::createActions() {
     mainWindowActions[aboutScoutTalkerAction] = new QAction(this);
     // Sets icon for the action
     mainWindowActions[aboutScoutTalkerAction]->setIcon(QIcon(":scout-talker-logo.png"));
-    // Connects the action to the aboutScoutTalker slot
-    connect(mainWindowActions[aboutScoutTalkerAction], SIGNAL(triggered()), aboutDialog, SLOT(aboutScoutTalker()));
+    // Connects the action to the aboutScoutTalkerSlot
+    connect(mainWindowActions[aboutScoutTalkerAction], SIGNAL(triggered()), aboutDialog, SLOT(aboutScoutTalkerSlot()));
 
     // About Qt action
     mainWindowActions[aboutQtAction] = new QAction(this);

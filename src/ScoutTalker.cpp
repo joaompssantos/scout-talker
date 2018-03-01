@@ -21,10 +21,6 @@
 
 #include "MainWindow.h"
 
-//#include <QChar>
-//#include <QString>
-//#include <QStringList>
-
 ScoutTalker::ScoutTalker(MainWindow *w) {
     toEncodeString = new QString("");
     encodedString = new QString("");

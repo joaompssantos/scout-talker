@@ -158,7 +158,13 @@ qt5_add_resources(SCOUTTALKER_RCC ${SCOUTTALKER_RCC})
 
 qt5_add_translation(SCOUTTALKER_QM ${SCOUTTALKER_TS})
 
-add_executable(${PROJECT_NAME} ${SCOUTTALKER_SRC} ${SCOUTTALKER_RCC} ${SCOUTTALKER_QM})
+# Prevents the windows consolo from showing
+if(WIN32)
+    SET( USE_STATIC ON )
+    set(GUI_TYPE WIN32)
+endif(WIN32)
+
+add_executable(${PROJECT_NAME} ${GUI_TYPE} ${SCOUTTALKER_SRC} ${SCOUTTALKER_RCC} ${SCOUTTALKER_QM})
 
 target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::PrintSupport)
 
