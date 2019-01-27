@@ -17,12 +17,20 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef __SCOUTTALKER_CONFIG_H__
-#define __SCOUTTALKER_CONFIG_H__
+#include "HelpDialog.h"
 
-#define SCOUTTALKER_VERSION_MAJOR @SCOUTTALKER_VERSION_MAJOR@
-#define SCOUTTALKER_VERSION_MINOR @SCOUTTALKER_VERSION_MINOR@
-#define SCOUTTALKER_VERSION_PATCH @SCOUTTALKER_VERSION_PATCH@
-#define SCOUTTALKER_VERSION "@SCOUTTALKER_VERSION@"
+// Creates new instance of AboutDialog with the proper text
+HelpDialog::HelpDialog(QString const title, QString const text) : QMessageBox() {
+    helpTitle = title;
+    helpText = text;
+}
 
-#endif
+void HelpDialog::setHelpStrings(QString const title, QString const text) {
+    helpTitle = title;
+    helpText = text;
+}
+
+// Shows QMessageBox with AboutDialog text
+void HelpDialog::helpDialogSlot() {
+    QMessageBox::about(parentWidget(), helpTitle, helpText);
+}

@@ -1,6 +1,6 @@
 /* Scout Talker - Scouting codes, ciphers and encryption program
- * Copyright (C) 2015 - 2018 by Diana Capela
- *                              João  Santos    (joaompssantos@gmail.com)
+ * Copyright (C) 2015 by Diana Capela
+ *                       João  Santos    (joaompssantos@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,48 +17,29 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef SCOUTTALKER_H
-#define SCOUTTALKER_H
+#ifndef HELPDIALOG_H
+#define HELPDIALOG_H
 
-#include <QObject>
+#include <QMessageBox>
 
-class MainWindow;
 
-class ScoutTalker : public QObject {
+class HelpDialog : public QMessageBox {
 
 Q_OBJECT
 
 public:
-    explicit ScoutTalker(MainWindow *w);
+    HelpDialog(QString, QString);
 
-    // Methods / Functions
+    void setHelpStrings(QString, QString);
+
 private:
     // Variables
-    QString *toEncodeString;
-    QString *encodedString;
-    QString diacriticLetters;
-    QStringList nonDiacriticLetters;
-
-    MainWindow *mainWindow;
-
-    // Methods / Functions
-    void clearStrings();
-
-    QString removeDiacriticLetters(QString string);
-
-    void encode();
-
-    void encodeChineseCode();
-
-    void encodeAngularCode();
-
-    void encodeReverseAlphabet();
-
-signals:
+    QString helpText;
+    QString helpTitle;
 
 public slots:
 
-    void encodeSlot();
+    void helpDialogSlot();
 };
 
-#endif // SCOUTTALKER_H
+#endif // HELPDIALOG_H

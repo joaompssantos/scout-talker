@@ -19,8 +19,8 @@ These formats depend on the used code as not all the codes can be saved in all t
 
 ## Available languages
 
-- [X] English
-- [X] Portuguese
+- English
+- Portuguese
 
 ## Other features:
 

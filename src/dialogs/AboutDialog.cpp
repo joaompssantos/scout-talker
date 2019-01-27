@@ -1,6 +1,6 @@
 /* Scout Talker - Scouting codes, ciphers and encryption program
- * Copyright (C) 2015 - 2018 by Diana Capela
- *                              João  Santos    (joaompssantos@gmail.com)
+ * Copyright (C) 2015 by Diana Capela
+ *                       João  Santos    (joaompssantos@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #include <QApplication>
 
 // Creates new instance of AboutDialog with the proper text
-AboutDialog::AboutDialog(QWidget *parent) : QMessageBox(parent) {
+AboutDialog::AboutDialog() : QMessageBox() {
     translateAboutDialog();
 }
 
@@ -31,7 +31,7 @@ void AboutDialog::translateAboutDialog() {
     aboutDefinition = tr("Qt based, open source Scout codes cipher program.");
     aboutVersion = tr("Version");
 
-    aboutText = QString("<p><h3>%1:</h3></p>" "%2" "<p>%3: %4</p>" "<p>Copyright © 2015 - 2018, %5.</p>")
+    aboutText = QString("<p><h3>%1:</h3></p>" "%2" "<p>%3: %4</p>" "<p>Copyright © 2015, %5.</p>")
             .arg(QApplication::applicationName())
             .arg(aboutDefinition)
             .arg(aboutVersion)
@@ -44,11 +44,9 @@ void AboutDialog::changeEvent(QEvent *event) {
     if (event->type() == QEvent::LanguageChange) {
         translateAboutDialog();
     }
-
-    QMessageBox::changeEvent(event);
 }
 
 // Shows QMessageBox with AboutDialog text
 void AboutDialog::aboutScoutTalkerSlot() {
-    QMessageBox::about(parentWidget(), QString("About %1").arg(QApplication::applicationName()), aboutText);
+    about(parentWidget(), QString("About %1").arg(QApplication::applicationName()), aboutText);
 }

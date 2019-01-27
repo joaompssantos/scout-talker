@@ -1,6 +1,6 @@
 /* Scout Talker - Scouting codes, ciphers and encryption program
- * Copyright (C) 2015 - 2018 by Diana Capela
- *                              João  Santos    (joaompssantos@gmail.com)
+ * Copyright (C) 2015 by Diana Capela
+ *                       João  Santos    (joaompssantos@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,33 +17,20 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef ABOUTDIALOG_H
-#define ABOUTDIALOG_H
+#ifndef CHINESECODE_H
+#define CHINESECODE_H
 
-#include <QMessageBox>
+#include <Code.h>
 
-class QString;
 
-class AboutDialog : public QMessageBox {
-Q_OBJECT
+class ChineseCode : public Code {
 
 public:
-    AboutDialog(QWidget *parent);
-
-private:
     // Variables
-    QString aboutText;
-    QString aboutDefinition;
-    QString aboutVersion;
 
-    // Methods
-    void translateAboutDialog();
-
-    void changeEvent(QEvent *event);
-
-public slots:
-
-    void aboutScoutTalkerSlot();
+    // Methods / Functions
+    ChineseCode();
 };
 
-#endif //ABOUTDIALOG_H
+
+#endif //CHINESECODE_H

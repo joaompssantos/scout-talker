@@ -1,8 +1,8 @@
 Especificações Scout Talker
-- Multi language: https://wiki.qt.io/How_to_create_a_multi_language_application http://doc.qt.io/qt-5/i18n-source-translation.html
-- Change Gui size with resolution or something : http://doc.qt.io/qt-5/scalability.html , http://doc.qt.io/qt-5/highdpi.html 
+- Change Gui size with resolution or something : http://doc.qt.io/qt-5/scalability.html , http://doc.qt.io/qt-5/highdpi.html
 - Multi platform eventually
 - Check for upgrades
+- Save settings: https://wiki.qt.io/How_to_Use_QSettings
 - Best practices: http://doc.qt.io/qt-5/overviews-main.html
 - Documentation: https://wiki.qt.io/Qt_Writing_Guidelines
 - Layout managment: http://doc.qt.io/qt-5/layout.html
@@ -12,3 +12,9 @@ Especificações Scout Talker
 - Create protections and checks (ex: check if file was successfully saved)
 - Some letter on chinese and angular code are too close together
 - Codes: https://sites.google.com/site/codesforscouts/home
+- Think about Word-like text editor bar, see:
+    - https://musescore.org/en/node/23432
+    - http://doc.qt.io/qt-5/qfontcombobox.html
+    - https://forum.qt.io/topic/76549/how-to-create-a-qtextedit-with-bold-italic-buttons
+    - https://github.com/Anchakor/MRichTextEditor/blob/master/mrichtextedit.ui
+    - https://doc.qt.io/qt-5.10/qtquickcontrols2-texteditor-example.html

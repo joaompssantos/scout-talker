@@ -17,12 +17,57 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef __SCOUTTALKER_CONFIG_H__
-#define __SCOUTTALKER_CONFIG_H__
+#ifndef SAVECODE_H
+#define SAVECODE_H
 
-#define SCOUTTALKER_VERSION_MAJOR @SCOUTTALKER_VERSION_MAJOR@
-#define SCOUTTALKER_VERSION_MINOR @SCOUTTALKER_VERSION_MINOR@
-#define SCOUTTALKER_VERSION_PATCH @SCOUTTALKER_VERSION_PATCH@
-#define SCOUTTALKER_VERSION "@SCOUTTALKER_VERSION@"
+#include <QObject>
 
-#endif
+
+class QTextEdit;
+
+
+class SaveCode : public QObject {
+
+Q_OBJECT
+
+public:
+    // Variables
+
+    // File saving types
+    enum savingTypes {
+        All,
+        Font,
+        Image
+    };
+
+    // Stores the available saving formats for a given code
+    savingTypes savingType;
+
+    // Stores the text editor box
+    QTextEdit *textEdit;
+    
+    // Stores filename
+    QString fileName;
+
+    // Methods
+    SaveCode(savingTypes, QTextEdit *);
+
+private:
+    // Variables
+
+    // Methods
+    void saveAsPNG();
+
+    void saveAsPDF();
+
+    void saveAsDoc();
+
+    void saveAsTxt();
+
+public slots:
+
+    void saveFile();
+};
+
+
+#endif //SAVECODE_H

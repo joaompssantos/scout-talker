@@ -1,6 +1,6 @@
 /* Scout Talker - Scouting codes, ciphers and encryption program
- * Copyright (C) 2015 - 2018 by Diana Capela
- *                              João  Santos    (joaompssantos@gmail.com)
+ * Copyright (C) 2015 by Diana Capela
+ *                       João  Santos    (joaompssantos@gmail.com)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,5 +42,5 @@ int main(int argc, char *argv[]) {
     mainWindow.show();
 
     // Run application
-    return application.exec();
+    return QApplication::exec();
 }
