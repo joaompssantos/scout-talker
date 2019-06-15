@@ -26,15 +26,18 @@
 #include <QPrinter>
 #include <QTextDocumentWriter>
 #include <QTextEdit>
-//#include <QTextStream>
+#include <QTextStream>
 
-#include <QDebug>
+// Needed to use static variable
+QString SaveCode::lastPath;
 
 /** Constructor **/
 SaveCode::SaveCode(savingTypes saveType, QTextEdit *textedit) : QObject() {
     savingType = saveType;
     textEdit = textedit; // TODO: check this
-};
+
+    lastPath = QDir::homePath();
+}
 
 /** Private Methods **/
 void SaveCode::saveAsPNG() {
@@ -131,7 +134,7 @@ void SaveCode::saveAsPDF() {
 //        document.setPageSize(printer.pageRect().size() * 0.5); // To ignore page numbers
 //        document.setPageSize(printer.paperRect().size());
     document.setDefaultFont(textEdit->font());
-    printf("%d\n", textEdit->font().pointSize());
+//    printf("%d\n", textEdit->font().pointSize());
     document.setPageSize(QPageSize::definitionSize(QPageSize::A4));
 //        document.setPageSize(QSizeF(QSize(210, 297, QPrinter::Millimeter)));
     document.print(&printer);
@@ -141,7 +144,7 @@ void SaveCode::saveAsPDF() {
     textEdit->setFont(aux_font);
 }
 
-void SaveCode::saveAsDoc() {
+void SaveCode::saveAsODT() {
     QTextDocument *textDocument = textEdit->document();
 
     QTextDocumentWriter writer;
@@ -150,7 +153,7 @@ void SaveCode::saveAsDoc() {
     writer.write(textDocument);
 }
 
-void SaveCode::saveAsTxt() {
+void SaveCode::saveAsTXT() {
     // Open file to write
     QFile file(fileName);
     file.open(QFile::WriteOnly);
@@ -175,16 +178,17 @@ void SaveCode::saveFile() {
     switch (savingType) {
         case savingTypes::All:
             formats = tr("Portable Network Graphics (*.png);;Portable Document Format (*.pdf);;"
-                         "Word Document (*.doc, *.docx);;Text file (*.txt)");
+                         "Open Document Format (*.odt);;Text file (*.txt)");
 
             break;
+
+//        case savingTypes::Font:
+//            formats = tr("Portable Network Graphics (*.png);;Portable Document Format (*.pdf);;"
+//                         "Open Document Format (*.odt)"); // TODO: Doesn't seem to be possible to select font on odt file
+
+//            break;
 
         case savingTypes::Font:
-            formats = tr("Portable Network Graphics (*.png);;Portable Document Format (*.pdf);;"
-                         "Word Document (*.doc, *.docx)");
-
-            break;
-
         case savingTypes::Image:
             formats = tr("Portable Network Graphics (*.png);;Portable Document Format (*.pdf)");
 
@@ -192,13 +196,13 @@ void SaveCode::saveFile() {
 
         default:
             formats = tr("Portable Network Graphics (*.png);;Portable Document Format (*.pdf);;"
-                         "Word Document (*.doc, *.docx);;Text file (*.txt)");
+                         "Open Document Format (*.doc);;Text file (*.txt)");
 
             break;
     }
 
     // Create new file dialog, named "Save as" and starting at the home directory
-    fileName = QFileDialog::getSaveFileName(nullptr, tr("Save as..."), QDir::homePath(), formats); // TODO: Use previous path: https://stackoverflow.com/questions/3597900/qsettings-file-chooser-should-remember-the-last-directory
+    fileName = QFileDialog::getSaveFileName(nullptr, tr("Save as..."), lastPath, formats);
 
     // If string is empty, for instance due to cancellation, skips the saving to file
     if (fileName.isEmpty()) {
@@ -208,18 +212,19 @@ void SaveCode::saveFile() {
     // Choose the proper saving method according to extension
     QFileInfo fileInfo(fileName);
     auto suffix = fileInfo.suffix();
+    lastPath = fileInfo.absolutePath();
 
-    if (~QString::compare(suffix, "png", Qt::CaseInsensitive)) {
+    if (QString::compare(suffix, "png", Qt::CaseInsensitive) == 0) {
         saveAsPNG();
     }
-    else if (~QString::compare(suffix, "pdf", Qt::CaseInsensitive)) {
+    else if (QString::compare(suffix, "pdf", Qt::CaseInsensitive) == 0) {
         saveAsPDF();
     }
-    else if (~QString::compare(suffix, "doc", Qt::CaseInsensitive)) { // TODO: check this extension
-        saveAsDoc();
+    else if (QString::compare(suffix, "odt", Qt::CaseInsensitive) == 0) {
+        saveAsODT();
     }
-    else if (~QString::compare(suffix, "txt", Qt::CaseInsensitive)) {
-        saveAsTxt();
+    else if (QString::compare(suffix, "txt", Qt::CaseInsensitive) == 0) {
+        saveAsTXT();
     }
     else {
         // Should never be reached

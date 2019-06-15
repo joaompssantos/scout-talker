@@ -55,14 +55,17 @@ public:
 private:
     // Variables
 
+    // Stores last path
+    static QString lastPath;
+
     // Methods
     void saveAsPNG();
 
     void saveAsPDF();
 
-    void saveAsDoc();
+    void saveAsODT();
 
-    void saveAsTxt();
+    void saveAsTXT();
 
 public slots:
 
