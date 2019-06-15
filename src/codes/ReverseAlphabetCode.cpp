@@ -17,7 +17,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "ChineseCode.h"
+#include "ReverseAlphabetCode.h"
 
 #include "HelpDialog.h"
 
@@ -25,21 +25,29 @@
 
 /** Constructor **/
 // Creates new instance of Code with the proper text
-ChineseCode::ChineseCode() : Code(SaveCode::savingTypes::Font) {
-    helpTitle = tr("Chinese code");
-    helpText = tr("<p>This cipher is composed only of horizontal and vertical dashes.</p>"
-                  "<p>The vertical dashes correspond to vowels, e.g. one dash equals 'a' and five dashes equal 'u'."
-                  "<p>Every other letter is obtained by adding horizontal dashes, for instance 'b' is a vertical dash "
-                  "crossed by a horizontal dash.</p>"); // TODO: Improve later, maybe by adding figures??
-
+ReverseAlphabetCode::ReverseAlphabetCode() : Code(SaveCode::savingTypes::All) {
+    helpTitle = tr("Reverse Alphabet code");
+    helpText = tr("This cipher simply reverses the alphabet, thus A = Z, B = Y, C = X, ...");
     helpDialog->setHelpStrings(helpTitle, helpText);
+}
 
-    // Do the configuration of the font for the chinese code text box
-    QFont font;
-    font.setFamily("Chines & Internacional");
-    font.setCapitalization(QFont::AllUppercase);
-    font.setPointSize(textBox->font().pointSize() + 20);
+/** Public Slots **/
+void ReverseAlphabetCode::encode(QString string) {
+    auto nChars = string.count();
 
-    // Sets the font for the text box
-    textBox->setFont(font);
+    QString encodedString;
+    encodedString.append(string);
+
+    for (auto i = 0; i < nChars; i++) {
+        auto currentCharacter = string[i];
+
+        if (currentCharacter.unicode() >= 0x41 && currentCharacter.unicode() <= 0x5A) {
+            encodedString[i] = (QChar) (0x9B - currentCharacter.unicode());
+        }
+        else if (currentCharacter.unicode() >= 0x61 && currentCharacter.unicode() <= 0x7A) {
+            encodedString[i] = (QChar) (0xDB - currentCharacter.unicode());
+        }
+    }
+
+    textBox->setText(encodedString);
 }

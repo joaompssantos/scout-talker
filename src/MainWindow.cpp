@@ -19,9 +19,11 @@
 
 #include "MainWindow.h"
 
+#include "AngularCode.h"
 #include "ChineseCode.h"
 #include "Code.h"
 #include "MainMenu.h"
+#include "ReverseAlphabetCode.h"
 
 #include <QApplication>
 #include <QColorDialog>
@@ -244,8 +246,8 @@ void MainWindow::createCodecAreaBox() {
 
     // Adds the widgets to the codec area box
     codecAreaBox->insertTab(availableCodes::Chinese, new ChineseCode(), tr("Chinese Code")); // TODO: consider adding availableCodes::Chinese to the class itself
-    codecAreaBox->insertTab(availableCodes::Angular, new Code(SaveCode::savingTypes::All), tr("Angular Code"));
-    codecAreaBox->insertTab(availableCodes::ReverseAlphabet, new Code(SaveCode::savingTypes::All), tr("Reverse Alphabet"));
+    codecAreaBox->insertTab(availableCodes::Angular, new AngularCode(), tr("Angular Code"));
+    codecAreaBox->insertTab(availableCodes::ReverseAlphabet, new ReverseAlphabetCode(), tr("Reverse Alphabet"));
 
     // Connect Code startEncoding() signal to the sendTextSlot() slot
     // then connect sendText() signal to Code encode()slot

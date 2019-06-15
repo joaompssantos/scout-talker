@@ -17,7 +17,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "ChineseCode.h"
+#include "AngularCode.h"
 
 #include "HelpDialog.h"
 
@@ -25,19 +25,19 @@
 
 /** Constructor **/
 // Creates new instance of Code with the proper text
-ChineseCode::ChineseCode() : Code(SaveCode::savingTypes::Font) {
-    helpTitle = tr("Chinese code");
-    helpText = tr("<p>This cipher is composed only of horizontal and vertical dashes.</p>"
-                  "<p>The vertical dashes correspond to vowels, e.g. one dash equals 'a' and five dashes equal 'u'."
-                  "<p>Every other letter is obtained by adding horizontal dashes, for instance 'b' is a vertical dash "
-                  "crossed by a horizontal dash.</p>"); // TODO: Improve later, maybe by adding figures??
+AngularCode::AngularCode() : Code(SaveCode::savingTypes::Font) {
+    helpTitle = tr("Angular code");
+    helpText = tr("<p>The Angular cipher, also known as Pinpen, is a geometric simple substitution cipher, "
+                  "which exchanges letters for symbols which are fragments of a grid.</p>"
+                  "<p>For more information please refer to the Wikipedia article on "
+                  "<a href=\"https://en.wikipedia.org/wiki/Pigpen_cipher\">Pigpen</a>.</p>"); // TODO: Improve later, maybe by adding figures??
 
     helpDialog->setHelpStrings(helpTitle, helpText);
 
     // Do the configuration of the font for the chinese code text box
     QFont font;
     font.setFamily("Chines & Internacional");
-    font.setCapitalization(QFont::AllUppercase);
+    font.setCapitalization(QFont::AllLowercase);
     font.setPointSize(textBox->font().pointSize() + 20);
 
     // Sets the font for the text box

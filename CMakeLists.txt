@@ -30,7 +30,7 @@ cmake_minimum_required(VERSION 3.5.1)
 # Project Definition
 ######################################################################################
 
-set(PROJECT_NAME "scout_talker")
+set(PROJECT_NAME "Scout-Talker")
 project(${PROJECT_NAME})
 
 set(SCOUTTALKER_VERSION_MAJOR "0")
@@ -132,7 +132,7 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/src/dialogs)
 include_directories(${PROJECT_SOURCE_DIR}/src/codes)
 
-# TODO: Re-order this
+# TODO: Re-order this and split to multiple SCOUTTALKER_SRC like
 set(SCOUTTALKER_SRC
         src/main.cpp
         src/MainWindow.cpp
@@ -149,6 +149,10 @@ set(SCOUTTALKER_SRC
         src/SaveCode.h
         src/codes/ChineseCode.cpp
         src/codes/ChineseCode.h
+        src/codes/AngularCode.cpp
+        src/codes/AngularCode.h
+        src/codes/ReverseAlphabetCode.cpp
+        src/codes/ReverseAlphabetCode.h
         )
 
 set(SCOUTTALKER_RCC

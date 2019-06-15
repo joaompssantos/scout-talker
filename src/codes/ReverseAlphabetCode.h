@@ -17,20 +17,19 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include "HelpDialog.h"
+#ifndef SCOUT_TALKER_REVERSEALPHABETCODE_H
+#define SCOUT_TALKER_REVERSEALPHABETCODE_H
 
-// Creates new instance of AboutDialog with the proper text
-HelpDialog::HelpDialog(QString const title, QString const text) : QMessageBox() {
-    helpTitle = title;
-    helpText = text;
-}
+#include "Code.h"
 
-void HelpDialog::setHelpStrings(QString const title, QString const text) {
-    helpTitle = title;
-    helpText = text;
-}
+class ReverseAlphabetCode : public Code {
+public:
+    // Methods / Functions
+    ReverseAlphabetCode();
 
-// Shows QMessageBox with AboutDialog text
-void HelpDialog::helpDialogSlot() {
-    QMessageBox::about(parentWidget(), helpTitle, helpText); // TODO: QMessagebox doesn't allow images --> Change to QDialog? --> Maybe override?
-}
+protected slots:
+    void encode(QString) override;
+};
+
+
+#endif //SCOUT_TALKER_REVERSEALPHABETCODE_H
