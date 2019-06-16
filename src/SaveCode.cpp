@@ -19,9 +19,7 @@
 
 #include "SaveCode.h"
 
-//#include <QFile>
 #include <QFileDialog>
-//#include <QFileInfo>
 #include <QPainter>
 #include <QPrinter>
 #include <QTextDocumentWriter>

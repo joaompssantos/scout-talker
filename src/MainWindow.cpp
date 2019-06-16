@@ -27,10 +27,13 @@
 
 #include <QApplication>
 #include <QColorDialog>
+#include <QCloseEvent>
 #include <QFontDialog>
 #include <QGroupBox>
 #include <QLabel>
 #include <QPushButton>
+#include <QScreen>
+#include <QSettings>
 #include <QTextEdit>
 #include <QVBoxLayout>
 
@@ -42,6 +45,9 @@ MainWindow::MainWindow() : QWidget() {
     // Install application and Qt translators
     QApplication::installTranslator(&translatorMainWindow);
     QApplication::installTranslator(&translatorQt);
+
+    // Load language
+    loadLanguage();
 
     // Main layout
     auto *mainLayout = new QVBoxLayout;
@@ -68,6 +74,9 @@ MainWindow::MainWindow() : QWidget() {
 
     // Apply initial texts to MainWindow
     translateMainWindow();
+
+    // Load settings
+    loadSettings();
 }
 
 MainWindow::~MainWindow() = default;
@@ -91,20 +100,22 @@ void MainWindow::setEncodedString(QString string) { // TODO: check if it is used
 /** Protected Methods **/
 
 /** Private Methods **/
-// Sets the text colour
-void MainWindow::setTextColour(QColor colour) {
-    // Sets text colour
-    mainTextBox->setTextColor(colour);
-    // Reload text to assert colour
-    mainTextBox->setText(getToEncodeString());
+// Applies text and translations to MainWindow
+void MainWindow::translateMainWindow() {
+    // Load translators
+    translatorMainWindow.load("ScoutTalker_" + currLang + ".qm");
+    // translatorQt.load("/usr/share/qt5/translations/qt_pt.qm"); // TODO: try to fix this or remove About Qt
 
-    for (int i = 0; i < MainWindow::Last; i++) {
-        auto *textBox = codecAreaBox->widget(i)->findChild<QTextEdit *>(); // TODO: check if it is correct, same for setTextFont
-        // Sets text colour
-        textBox->setTextColor(colour);
-        // Reload text to assert colour
-        textBox->setText(textBox->toPlainText());
-    }
+    // Main box text
+    mainTextBox->setText(tr("Insert text to encode..."));
+
+    // Tabs label
+    codecAreaBox->setTabText(availableCodes::Chinese, tr("Chinese Code"));
+    codecAreaBox->setTabText(availableCodes::Angular, tr("Angular Code"));
+    codecAreaBox->setTabText(availableCodes::ReverseAlphabet, tr("Reverse Alphabet"));
+
+    // Buttons text
+    mainMenuButton->setToolTip(tr("Opens Scout Talker main menu."));
 }
 
 // Sets the text font
@@ -128,6 +139,22 @@ void MainWindow::setTextFont(QFont font) {
             // Sets text font
             textBox->setFont(font);
         }
+    }
+}
+
+// Sets the text colour
+void MainWindow::setTextColour(QColor colour) {
+    // Sets text colour
+    mainTextBox->setTextColor(colour);
+    // Reload text to assert colour
+    mainTextBox->setText(getToEncodeString());
+
+    for (int i = 0; i < MainWindow::Last; i++) {
+        auto *textBox = codecAreaBox->widget(i)->findChild<QTextEdit *>(); // TODO: check if it is correct, same for setTextFont
+        // Sets text colour
+        textBox->setTextColor(colour);
+        // Reload text to assert colour
+        textBox->setText(textBox->toPlainText());
     }
 }
 
@@ -173,13 +200,14 @@ void MainWindow::createTitle() {
     mainMenuButton->setCursor(Qt::PointingHandCursor);
 
     // Adds the main menu to the push button
-    mainMenu = new MainMenu();
+    mainMenu = new MainMenu(&currLang);
     mainMenuButton->setMenu(mainMenu);
 
     // Connects the Main Menu signals to the Main Window slots
     connect(mainMenu, SIGNAL(changeLanguage(QAction *)), this, SLOT(changeLanguageSlot(QAction *)));
     connect(mainMenu, SIGNAL(changeFont()), this, SLOT(changeFontSlot()));
     connect(mainMenu, SIGNAL(changeColour()), this, SLOT(changeColourSlot()));
+    connect(mainMenu, SIGNAL(resetDefaults()), this, SLOT(resetDefaultsSlot()));
 
     // Set alignment of the layout
     layout->setAlignment(Qt::AlignCenter);
@@ -259,18 +287,64 @@ void MainWindow::createCodecAreaBox() {
     }
 }
 
-// Applies text and translations to MainWindow
-void MainWindow::translateMainWindow() {
-    // Main box text
-    mainTextBox->setText(tr("Insert text to encode..."));
+// Save Scout Talker settings
+void MainWindow::saveSettings() {
+    QSettings appSettings;
 
-    // Tabs label
-    codecAreaBox->setTabText(availableCodes::Chinese, tr("Chinese Code"));
-    codecAreaBox->setTabText(availableCodes::Angular, tr("Angular Code"));
-    codecAreaBox->setTabText(availableCodes::ReverseAlphabet, tr("Reverse Alphabet"));
+    appSettings.setValue("MainWindow/Position", pos());
+    appSettings.setValue("MainWindow/Size", size());
+    appSettings.setValue("MainWindow/Language", currLang);
 
-    // Buttons text
-    mainMenuButton->setToolTip(tr("Opens Scout Talker main menu."));
+    appSettings.setValue("Text/Font", mainTextBox->currentFont());
+    appSettings.setValue("Text/Colour", mainTextBox->textColor());
+}
+
+// Load Scout Talker settings
+void MainWindow::loadSettings() {
+    // Returns screen information
+    QScreen *screen = QGuiApplication::primaryScreen();
+    // Get position to center window
+    QPoint position = QPoint((screen->size().width() - 444) / 2, (screen->size().height() - 646) / 2);
+
+    // Read and load settings
+    QSettings appSettings;
+
+    // Load window position and size
+    move(appSettings.value("MainWindow/Position", position).toPoint());
+    resize(appSettings.value("MainWindow/Size", QSize(444, 646)).toSize());
+
+    // Load text font and colour
+    setTextFont(appSettings.value("Text/Font", QTextEdit().font()).value<QFont>());
+    setTextColour(appSettings.value("Text/Colour", palette().color(QPalette::WindowText)).value<QColor>());
+}
+
+// Reset defaults
+void MainWindow::resetDefaults() {
+    QSettings appSettings;
+
+    // Remove Font and Colour from the saved settings
+    appSettings.remove("Text/Font");
+    appSettings.remove("Text/Colour");
+
+    // Reset text font and colour
+    setTextFont(QTextEdit().font());
+    setTextColour(palette().color(QPalette::WindowText));
+}
+
+// Load Scout Talker language
+void MainWindow::loadLanguage() {
+    // Read and load settings
+    QSettings appSettings;
+
+    // Load window language
+    currLang = appSettings.value("MainWindow/Language", QStringLiteral("en_UK")).toString();
+}
+
+// On window close
+void MainWindow::closeEvent(QCloseEvent *event) {
+    saveSettings();
+
+    event->accept();
 }
 
 /** Public slots **/
@@ -278,12 +352,8 @@ void MainWindow::translateMainWindow() {
 /** Private slots **/
 // Language change slot
 void MainWindow::changeLanguageSlot(QAction *action) {
-    // Load the language dependant on the action content
-    QString locale = action->data().toString();
-
-    // Load translators
-    translatorMainWindow.load("ScoutTalker_" + locale + ".qm");
-    // translatorQt.load("/usr/share/qt5/translations/qt_pt.qm"); // TODO: try to fix this or remove About Qt
+    // Load the language depending on the action content
+    currLang = action->data().toString();
 
     // Translate MainWindow texts to the selected language
     translateMainWindow();
@@ -304,6 +374,11 @@ void MainWindow::changeColourSlot() {
     QColor colour = QColorDialog::getColor(mainTextBox->textColor(), this);
 
     if (colour.isValid()) setTextColour(colour);
+}
+
+// Slot to reset defaults
+void MainWindow::resetDefaultsSlot() {
+    resetDefaults();
 }
 
 void MainWindow::sendTextSlot() {

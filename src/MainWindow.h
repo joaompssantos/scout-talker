@@ -73,7 +73,7 @@ private:
     // Translation variables
     QTranslator translatorMainWindow; // Contains the translations for this application
     QTranslator translatorQt; // Contains the translations for qt
-    QString m_currLang; // Contains the currently loaded language TODO: implement this
+    QString currLang; // Contains the currently loaded language
 
     QString diacriticLetters ;// TODO: check these;
     QStringList nonDiacriticLetters;
@@ -81,15 +81,30 @@ private:
     // Methods / Functions
     void createTitle();
 
-    QString removeDiacriticLetters(QString string);
+    QString removeDiacriticLetters(QString);
 
     void createCodecAreaBox();
 
-    void setTextColour(QColor colour);
-
-    void setTextFont(QFont font);
-
     void translateMainWindow();
+
+    void setTextFont(QFont);
+
+    void setTextColour(QColor);
+
+    // Save Scout Talker settings
+    void saveSettings();
+
+    // Load Scout Talker settings
+    void loadSettings();
+
+    // Load Scout Talker language
+    void loadLanguage();
+
+    // Clear Scout Talker settings
+    void resetDefaults();
+
+    // On window close
+    void closeEvent(QCloseEvent *) override;
 
 signals:
 
@@ -98,11 +113,13 @@ signals:
 private slots:
 
     // This slot is called by the language menu actions
-    void changeLanguageSlot(QAction *action);
+    void changeLanguageSlot(QAction *);
 
     void changeFontSlot();
 
     void changeColourSlot();
+
+    void resetDefaultsSlot();
 
     void sendTextSlot();
 };

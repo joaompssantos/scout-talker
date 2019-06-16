@@ -31,12 +31,12 @@ void AboutDialog::translateAboutDialog() {
     aboutDefinition = tr("Qt based, open source Scout codes cipher program.");
     aboutVersion = tr("Version");
 
-    aboutText = QString("<p><h3>%1:</h3></p>" "%2" "<p>%3: %4</p>" "<p>Copyright © 2015, %5.</p>")
+    aboutText = QStringLiteral("<p><h3>%1:</h3></p>" "%2" "<p>%3: %4</p>" "<p>Copyright © 2015, %5.</p>")
             .arg(QApplication::applicationName())
             .arg(aboutDefinition)
             .arg(aboutVersion)
             .arg(QApplication::applicationVersion())
-            .arg(QApplication::organizationName());
+            .arg(QStringLiteral("Diana Capela & João Santos"));
 }
 
 // Detects language change and proceeds with the translation

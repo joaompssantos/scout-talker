@@ -39,7 +39,7 @@ private:
     // Methods
     void translateAboutDialog();
 
-    void changeEvent(QEvent *event) final;
+    void changeEvent(QEvent *) final;
 
 public slots:
 

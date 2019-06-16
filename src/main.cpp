@@ -27,11 +27,11 @@ int main(int argc, char *argv[]) {
     // Declaration of a new application
     QApplication application(argc, argv);
     // Set application name
-    QApplication::setApplicationName("Scout Talker");
+    QApplication::setApplicationName(QStringLiteral("Scout-Talker"));
     // Set application version
-    QApplication::setApplicationVersion(SCOUTTALKER_VERSION);
+    QApplication::setApplicationVersion(QStringLiteral(SCOUTTALKER_VERSION));
     // Set application organization name
-    QApplication::setOrganizationName("Diana Capela & João Santos");
+    QApplication::setOrganizationName(QStringLiteral("Scout-Talker"));
 
     // Add custom font to the Scout Talker application
     QFontDatabase::addApplicationFont(":chinese-angular.ttf");

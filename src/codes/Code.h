@@ -77,7 +77,7 @@ private:
     void translateCodecArea();
 
     // TODO: check if necessary, if necessary use this model in other classes
-    void changeEvent(QEvent *event) override;
+    void changeEvent(QEvent *) override;
 
 signals:
     void startEncoding();

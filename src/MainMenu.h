@@ -35,8 +35,7 @@ Q_OBJECT
 
 public:
     // Methods / Functions
-    MainMenu();
-
+    explicit MainMenu(const QString *);
 
 
 private:
@@ -47,6 +46,7 @@ private:
     enum mainMenuActionList {
         changeFontAction = 0,
         changeFontColourAction,
+        resetDefaultsAction,
         aboutScoutTalkerAction,
         aboutQtAction,
         exitAction,
@@ -59,7 +59,7 @@ private:
     QVector<QAction *> mainMenuActions;
 
     // Translation menu variables
-    QString m_currLang; // Contains the currently loaded language TODO: implement this
+    QString currLang; // Contains the currently loaded language
     QString languageTranslationsPath; // Path of language files. This is always fixed to /languages. TODO: Check this.
 
     // Methods / Functions
@@ -77,13 +77,17 @@ signals:
 
     void changeColour();
 
+    void resetDefaults();
+
 private slots:
 
-    void changeLanguageSlot(QAction *action);
+    void changeLanguageSlot(QAction *);
 
     void changeFontSlot();
 
     void changeColourSlot();
+
+    void resetDefaultsSlot();
 };
 
 

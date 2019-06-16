@@ -28,7 +28,10 @@
 
 
 /** Constructor **/
-MainMenu::MainMenu() {
+MainMenu::MainMenu(const QString *string) {
+    // Set current language
+    currLang = QString(*string);
+
     // Enables tool tips on main menu
     this->setToolTipsVisible(true);
 
@@ -39,6 +42,7 @@ MainMenu::MainMenu() {
     createActions();
 
     // Generate language menu
+    languageMenu = nullptr;
     createLanguageMenu();
     this->addMenu(languageMenu);
 
@@ -69,6 +73,11 @@ void MainMenu::createActions() {
     // Connects the Change Colour action to the Change Colour slot
     connect(mainMenuActions[changeFontColourAction], SIGNAL(triggered()), this, SLOT(changeColourSlot()));
 
+    // Reset defaults
+    mainMenuActions[resetDefaultsAction] = new QAction(this);
+    // Connects the Change Colour action to the Change Colour slot
+    connect(mainMenuActions[resetDefaultsAction], SIGNAL(triggered()), this, SLOT(resetDefaultsSlot()));
+
     // About Scout Talker action
     mainMenuActions[aboutScoutTalkerAction] = new QAction(this);
     // Sets icon for the action
@@ -88,7 +97,7 @@ void MainMenu::createActions() {
     // Sets shortcut for the exit action
     mainMenuActions[exitAction]->setShortcuts(QKeySequence::Quit);
     // Connects the exit action to the quit slot
-    connect(mainMenuActions[exitAction], SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
+    connect(mainMenuActions[exitAction], SIGNAL(triggered()), QApplication::instance(), SLOT(closeAllWindows()));
 }
 
 // Creates the language menu entries dynamically depending on the existing translations
@@ -103,7 +112,6 @@ void MainMenu::createLanguageMenu() {
     connect(translationActionGroup, SIGNAL(triggered(QAction *)), this, SLOT(changeLanguageSlot(QAction *)));
 
     // Define translations path
-    languageTranslationsPath = QApplication::applicationDirPath();
     QDir dir(languageTranslationsPath);
 
     // Get list of translation file names
@@ -130,7 +138,7 @@ void MainMenu::createLanguageMenu() {
         translationActionGroup->addAction(action);
 
         // Check the english option
-        if (language == "English") {
+        if (language == QLocale::languageToString(QLocale(currLang).language())) {
             action->setChecked(true);
         }
     }
@@ -149,6 +157,9 @@ void MainMenu::translateMainMenu() {
     mainMenuActions[changeFontColourAction]->setText(tr("Change Font &Colour"));
     mainMenuActions[changeFontColourAction]->setToolTip(tr("Edit application font colour."));
 
+    mainMenuActions[resetDefaultsAction]->setText(tr("&Reset Defaults"));
+    mainMenuActions[resetDefaultsAction]->setToolTip(tr("Reset application defaults."));
+
     mainMenuActions[aboutScoutTalkerAction]->setText(tr("About &Scout Talker"));
     mainMenuActions[aboutScoutTalkerAction]->setToolTip(tr("Show information about Scout Talker."));
 
@@ -162,6 +173,10 @@ void MainMenu::translateMainMenu() {
 /** Private slots **/
 // Slot to emit change language signal
 void MainMenu::changeLanguageSlot(QAction *action) {
+    // Save language given by the action content
+    currLang = action->data().toString();
+
+    // Emit changeLanguage signal
     emit changeLanguage(action);
 
     // Translate Main Menu after emitting the change Language signal
@@ -176,4 +191,9 @@ void MainMenu::changeFontSlot() {
 // Slot to emit edit colour signal
 void MainMenu::changeColourSlot() {
     emit changeColour();
+}
+
+// Slot to emit reset defaults signal
+void MainMenu::resetDefaultsSlot() {
+    emit resetDefaults();
 }
