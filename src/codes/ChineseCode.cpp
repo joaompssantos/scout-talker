@@ -21,18 +21,14 @@
 
 #include "HelpDialog.h"
 
+#include <QEvent>
 #include <QTextEdit>
 
 /** Constructor **/
 // Creates new instance of Code with the proper text
 ChineseCode::ChineseCode() : Code(SaveCode::savingTypes::Font) {
-    helpTitle = tr("Chinese code");
-    helpText = tr("<p>This cipher is composed only of horizontal and vertical dashes.</p>"
-                  "<p>The vertical dashes correspond to vowels, e.g. one dash equals 'a' and five dashes equal 'u'."
-                  "<p>Every other letter is obtained by adding horizontal dashes, for instance 'b' is a vertical dash "
-                  "crossed by a horizontal dash.</p>"); // TODO: Improve later, maybe by adding figures??
-
-    helpDialog->setHelpStrings(helpTitle, helpText);
+    // Add text to code
+    translateHelpText();
 
     // Do the configuration of the font for the chinese code text box
     QFont font;
@@ -42,4 +38,24 @@ ChineseCode::ChineseCode() : Code(SaveCode::savingTypes::Font) {
 
     // Sets the font for the text box
     textBox->setFont(font);
+}
+
+/** Private methods **/
+// Detects language change and proceeds with the translation
+void ChineseCode::changeEvent(QEvent *event) {
+    if (event->type() == QEvent::LanguageChange) {
+        Code::translateCodecArea();
+
+        translateHelpText();
+    }
+}
+
+void ChineseCode::translateHelpText() {
+    helpTitle = tr("Chinese code");
+    helpText = tr("<p>This cipher is composed only of horizontal and vertical dashes.</p>"
+                  "<p>The vertical dashes correspond to vowels, e.g. one dash equals 'a' and five dashes equal 'u'."
+                  "<p>Every other letter is obtained by adding horizontal dashes, for instance 'b' is a vertical dash "
+                  "crossed by a horizontal dash.</p>"); // TODO: Improve later, maybe by adding figures??
+
+    helpDialog->setHelpStrings(helpTitle, helpText);
 }

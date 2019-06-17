@@ -21,18 +21,14 @@
 
 #include "HelpDialog.h"
 
+#include <QEvent>
 #include <QTextEdit>
 
 /** Constructor **/
 // Creates new instance of Code with the proper text
 AngularCode::AngularCode() : Code(SaveCode::savingTypes::Font) {
-    helpTitle = tr("Angular code");
-    helpText = tr("<p>The Angular cipher, also known as Pinpen, is a geometric simple substitution cipher, "
-                  "which exchanges letters for symbols which are fragments of a grid.</p>"
-                  "<p>For more information please refer to the Wikipedia article on "
-                  "<a href=\"https://en.wikipedia.org/wiki/Pigpen_cipher\">Pigpen</a>.</p>"); // TODO: Improve later, maybe by adding figures??
-
-    helpDialog->setHelpStrings(helpTitle, helpText);
+    // Add text to code
+    translateHelpText();
 
     // Do the configuration of the font for the chinese code text box
     QFont font;
@@ -42,4 +38,24 @@ AngularCode::AngularCode() : Code(SaveCode::savingTypes::Font) {
 
     // Sets the font for the text box
     textBox->setFont(font);
+}
+
+/** Private methods **/
+// Detects language change and proceeds with the translation
+void AngularCode::changeEvent(QEvent *event) {
+    if (event->type() == QEvent::LanguageChange) {
+        Code::translateCodecArea();
+
+        translateHelpText();
+    }
+}
+
+void AngularCode::translateHelpText() {
+    helpTitle = tr("Angular code");
+    helpText = tr("<p>The Angular cipher, also known as Pinpen, is a geometric simple substitution cipher, "
+                  "which exchanges letters for symbols which are fragments of a grid.</p>"
+                  "<p>For more information please refer to the Wikipedia article on "
+                  "<a href=\"https://en.wikipedia.org/wiki/Pigpen_cipher\">Pigpen</a>.</p>"); // TODO: Improve later, maybe by adding figures??
+
+    helpDialog->setHelpStrings(helpTitle, helpText);
 }

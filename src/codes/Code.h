@@ -55,7 +55,8 @@ protected:
 
     QTextEdit *textBox;
 
-    // Methods
+    // Methods / Functions
+    void translateCodecArea();
 
 private:
     // Variables
@@ -74,7 +75,7 @@ private:
     // Methods / Functions
     QVBoxLayout *configCodecAreaWidgets();
 
-    void translateCodecArea();
+    virtual void translateHelpText() = 0;
 
     // TODO: check if necessary, if necessary use this model in other classes
     void changeEvent(QEvent *) override;

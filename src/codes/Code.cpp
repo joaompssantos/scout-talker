@@ -106,7 +106,7 @@ void Code::translateCodecArea() {
     // Add help button text
     helpButton->setText(tr("Help"));
     // Adds tooltip to the help button
-    helpButton->setToolTip(tr("Push to show help for the current cipher (NOT IMPLEMENTED)."));
+    helpButton->setToolTip(tr("Push to show help for the current cipher."));
     // Adds save button text
     saveButton->setText(tr("Save"));
     // Adds tooltip to the save button

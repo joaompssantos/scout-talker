@@ -25,9 +25,17 @@
 
 class AngularCode : public Code {
 
+Q_OBJECT
+
 public:
     // Methods / Functions
     AngularCode();
+
+private:
+    // Methods
+    void changeEvent(QEvent *) override;
+
+    void translateHelpText() override ;
 };
 
 

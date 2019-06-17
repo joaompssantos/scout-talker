@@ -17,19 +17,29 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef SCOUT_TALKER_REVERSEALPHABETCODE_H
-#define SCOUT_TALKER_REVERSEALPHABETCODE_H
+#ifndef REVERSEALPHABETCODE_H
+#define REVERSEALPHABETCODE_H
 
 #include "Code.h"
 
 class ReverseAlphabetCode : public Code {
+
+Q_OBJECT
+
 public:
     // Methods / Functions
     ReverseAlphabetCode();
 
+private:
+    // Methods
+    void changeEvent(QEvent *) override;
+
+    void translateHelpText() override ;
+
 protected slots:
+
     void encode(QString) override;
 };
 
 
-#endif //SCOUT_TALKER_REVERSEALPHABETCODE_H
+#endif // REVERSEALPHABETCODE_H

@@ -37,6 +37,7 @@
 #include <QTextEdit>
 #include <QVBoxLayout>
 
+#include <QLibraryInfo>
 #include <QDebug> // TODO: remove
 
 
@@ -72,7 +73,7 @@ MainWindow::MainWindow() : QWidget() {
     // Set the window title
     setWindowTitle(QApplication::applicationName());
 
-    // Apply initial texts to MainWindow
+    // Apply initial texts / translation to the Scout Talker
     translateMainWindow();
 
     // Load settings
@@ -104,7 +105,7 @@ void MainWindow::setEncodedString(QString string) { // TODO: check if it is used
 void MainWindow::translateMainWindow() {
     // Load translators
     translatorMainWindow.load("ScoutTalker_" + currLang + ".qm");
-    // translatorQt.load("/usr/share/qt5/translations/qt_pt.qm"); // TODO: try to fix this or remove About Qt
+//    translatorQt.load("qt_" + currLang + ".qm"); // TODO: try to fix this or remove About Qt
 
     // Main box text
     mainTextBox->setText(tr("Insert text to encode..."));
@@ -337,7 +338,7 @@ void MainWindow::loadLanguage() {
     QSettings appSettings;
 
     // Load window language
-    currLang = appSettings.value("MainWindow/Language", QStringLiteral("en_UK")).toString();
+    currLang = appSettings.value("MainWindow/Language", QStringLiteral("pt_PT")).toString();
 }
 
 // On window close

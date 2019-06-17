@@ -26,6 +26,7 @@
 #include <QLocale>
 #include <QPushButton>
 
+#include <QDebug> // TODO: Remove
 
 /** Constructor **/
 MainMenu::MainMenu(const QString *string) {
@@ -170,6 +171,13 @@ void MainMenu::translateMainMenu() {
     mainMenuActions[exitAction]->setToolTip(tr("Quit Scout Talker."));
 }
 
+// Detects language change and proceeds with the translation
+void MainMenu::changeEvent(QEvent *event) {
+    if (event->type() == QEvent::LanguageChange) {
+        translateMainMenu();
+    }
+}
+
 /** Private slots **/
 // Slot to emit change language signal
 void MainMenu::changeLanguageSlot(QAction *action) {
@@ -178,9 +186,6 @@ void MainMenu::changeLanguageSlot(QAction *action) {
 
     // Emit changeLanguage signal
     emit changeLanguage(action);
-
-    // Translate Main Menu after emitting the change Language signal
-    translateMainMenu();
 }
 
 // Slot to emit edit font signal

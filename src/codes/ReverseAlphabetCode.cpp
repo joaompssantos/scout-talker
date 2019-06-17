@@ -21,11 +21,27 @@
 
 #include "HelpDialog.h"
 
+#include <QEvent>
 #include <QTextEdit>
 
 /** Constructor **/
 // Creates new instance of Code with the proper text
 ReverseAlphabetCode::ReverseAlphabetCode() : Code(SaveCode::savingTypes::All) {
+    // Add text to code
+    translateHelpText();
+}
+
+/** Private methods **/
+// Detects language change and proceeds with the translation
+void ReverseAlphabetCode::changeEvent(QEvent *event) {
+    if (event->type() == QEvent::LanguageChange) {
+        Code::translateCodecArea();
+
+        translateHelpText();
+    }
+}
+
+void ReverseAlphabetCode::translateHelpText() {
     helpTitle = tr("Reverse Alphabet code");
     helpText = tr("This cipher simply reverses the alphabet, thus A = Z, B = Y, C = X, ...");
     helpDialog->setHelpStrings(helpTitle, helpText);

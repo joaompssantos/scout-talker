@@ -69,6 +69,8 @@ private:
 
     void translateMainMenu();
 
+    void changeEvent(QEvent *) override;
+
 signals:
 
     void changeLanguage(QAction *);
@@ -89,6 +91,5 @@ private slots:
 
     void resetDefaultsSlot();
 };
-
 
 #endif // MAINMENU_H

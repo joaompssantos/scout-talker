@@ -25,11 +25,19 @@
 
 class ChineseCode : public Code {
 
+Q_OBJECT
+
 public:
     // Variables
 
     // Methods / Functions
     ChineseCode();
+
+private:
+    // Methods
+    void changeEvent(QEvent *) override;
+
+    void translateHelpText() override ;
 };
 
 
